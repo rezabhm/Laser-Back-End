@@ -19,12 +19,13 @@ from django.urls import path, include
 urlpatterns = [
 
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('Admin/', include('Admin.urls')),
-    path('Core/', include('Core.urls')),
-    path('Laser/', include('LazerApp.urls')),
-    path('Payment/', include('Payment.urls')),
-    path('Reception/', include('Reception.urls')),
-    path('Reserve/', include('Reserve.urls')),
-    path('Setting/', include('Setting.urls')),
+    # path('Core/', include('Core.urls')),
+    # path('Laser/', include('LazerApp.urls')),
+    # path('Payment/', include('Payment.urls')),
+    # path('Reception/', include('Reception.urls')),
+    # path('Reserve/', include('Reserve.urls')),
+    # path('Setting/', include('Setting.urls')),
 
 ]

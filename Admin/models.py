@@ -1,5 +1,7 @@
 from django.db import models
 
+from Core import models as core_models
+
 # Create your models here.
 
 
@@ -12,7 +14,9 @@ class OperatorProgram(models.Model):
 
     """
 
+    # information
     id = models.CharField(max_length=150, primary_key=True)
+    operator_name = models.CharField(max_length=20, default='UnKnow', null=True)
 
     # program date
     date_int = models.FloatField(default=0.0)
@@ -26,6 +30,9 @@ class OperatorProgram(models.Model):
 
     )
     program_turn = models.CharField(max_length=1, choices=program_turn_tuple, default='m')
+
+    # foreign key
+    operator = models.ForeignKey(core_models.User, on_delete=models.PROTECT, default='', null=True)
 
     def __str__(self):
         return self.id

@@ -1,5 +1,6 @@
 import datetime
 import time
+import json
 
 import jdatetime
 
@@ -74,13 +75,36 @@ def sale_status(status):
     return dict_status[status]
 
 
-def cvt_str2int_time(date):
+def cvt_str2int_time(year, month, day):
+
+    # convert
+    string = f'{day}/{month}/{year}'
+    time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+    return time_filter
+
+
+def split_date(date):
 
     # split date
     year, month, day = date.split('/')
 
-    # convert
-    string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
-    time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+    return int(year), int(month), int(day)
 
-    return time_filter
+
+def decode_reqeust_json(request):
+
+    json_unicode = request.body.decode('utf-8')
+    json_data = json.loads(json_unicode)
+
+    return json_data
+
+
+def cvt_solar_date2ad_int(date):
+
+    year, month, day = split_date(date)
+    year, month, day = solar2ad(year, month, day)
+    date_int = cvt_str2int_time(year, month, day)
+
+    return date_int
+
