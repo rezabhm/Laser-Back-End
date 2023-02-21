@@ -10,7 +10,7 @@ class OperatorProgramAdmin(admin.ModelAdmin):
 
     fieldsets = (
 
-        ("information", {"fields": ("id", "date_int", 'date_str', 'program_turn', 'operator_user_name', 'operator')}),
+        ("information", {"fields": ("id", "date_int", 'date_str', 'program_turn', 'operator_name', 'operator')}),
 
     )
 

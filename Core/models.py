@@ -64,6 +64,7 @@ class ForgotPassword(models.Model):
 
     # information
     code = models.CharField(default='****', max_length=5, primary_key=True)
+    code_generate = models.CharField(default='****', max_length=8, )
 
     # timing
     expire_time = models.FloatField(default=0.0)
@@ -123,6 +124,9 @@ class Customer(models.Model):
     drug_hist = models.BooleanField(default=False)
     decease_hist = models.BooleanField(default=False)
     doctor = models.CharField(max_length=50)
+
+    # foreign key
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default='')
 
     def __str__(self):
         return self.national_code

@@ -35,12 +35,12 @@ class TokenAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.ForgotPassword)
-class TokenAdmin(admin.ModelAdmin):
-    list_display = ["code", 'user']
+class ForgotPasswordAdmin(admin.ModelAdmin):
+    list_display = ["code", 'code_generate', 'user']
 
     fieldsets = (
 
-        ("Information", {"fields": ("code", 'proved')}),
+        ("Information", {"fields": ("code", 'code_generate', 'proved')}),
         ("Timing", {"fields": ("expire_time",)}),
         ("Foreign Key", {"fields": ("user",)}),
 
@@ -72,6 +72,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
         ("Information", {"fields": ("national_code", 'address', 'house_number')}),
         ("Medical History", {"fields": ("drug_hist", 'decease_hist', 'doctor')}),
+        ("Foreign Key", {"fields": ("user",)}),
 
     )
 

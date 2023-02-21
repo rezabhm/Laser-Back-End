@@ -12,7 +12,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Admin/'
 
-r = requests.post(src + 'operator/program/', json=json_request)
+r = requests.post(src + 'operator/program/list/', json=json_request)
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

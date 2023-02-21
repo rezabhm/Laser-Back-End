@@ -108,3 +108,20 @@ def cvt_solar_date2ad_int(date):
 
     return date_int
 
+
+def time_int2str(time_):
+
+    current_time = time.ctime(time_).split()
+    x = ad2solar(
+
+        int(current_time[-1]),
+        current_time[1],
+        int(current_time[2]),
+        current_time[0]
+
+    )
+
+    return '{0}/{1}/{2}  {3} {4}'.format(str(x[0]), str(x[1]), str(x[2]), str(x[3]),
+                                                           str(current_time[3]))
+
+
