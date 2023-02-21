@@ -1,11 +1,12 @@
-import random
-import time
-
 from Core import models
 from . import authentication
 from LIB import utils
+from SmsService import SMS
 
+import random
+import time
 from uuid import uuid4
+
 
 def check_username(username, user_type='c', national_code='0'):
 
@@ -252,6 +253,7 @@ def forgot_password(username):
             fg_obj.code_generate = f'{random.randint(99999,999999)}'
             fg_obj.expire_time = time.time() + 60*10
             fg_obj.proved = False
+            fg_obj.used = False
 
             # save
             fg_obj.save()
@@ -270,8 +272,94 @@ def forgot_password(username):
             # save
             fg_obj.save()
 
+        # send sms to user
+        SMS.send_forgot_password_sms(user.phone_number, fg_obj.code_generate)
+
         return 201, 'successfully'
 
+    else:
+
+        return 400, 'wrong username'
+
+
+def prove_forgot_password(username, code):
+
+    """
+
+    check forgot password's code is valid or not
+
+    """
+
+    # check username
+    status = check_username(username, '', '')
+
+    if status:
+
+        try:
+
+            # check code
+            fg_code = models.ForgotPassword.objects.get(code_generate=code)
+
+            if fg_code.expire_time >= time.time():
+
+                fg_code.proved = True
+                fg_code.save()
+
+                return 201, 'proved'
+
+            else:
+
+                return 400, 'time limit exceed'
+
+        except:
+
+            return 400, 'wrong code'
+
+    else:
+
+        return 400, 'wrong username'
+
+
+def change_password(username, password, code):
+
+    """
+
+    check forgot password's code is valid or not
+
+    """
+
+    # check username
+    status = check_username(username, '', '')
+
+    if status:
+
+        # get user
+        user = models.User.objects.get(username=username)
+
+        try:
+
+            # check code
+            fg_code = models.ForgotPassword.objects.get(code_generate=code)
+
+            if not fg_code.used and fg_code.proved:
+
+                # change password
+                user.password = authentication.password_hash(password)
+                user.save()
+
+                # expire code
+                fg_code.used = True
+                fg_code.save()
+
+                return 201, 'successfully changed password'
+
+            else:
+
+                return 400, 'you cant use this code'
+
+        except:
+
+            return 400, 'wrong code'
 
     else:
 

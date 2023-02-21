@@ -63,7 +63,7 @@ class ForgotPassword(models.Model):
     """
 
     # information
-    code = models.CharField(default='****', max_length=5, primary_key=True)
+    code = models.CharField(default='****', max_length=8, primary_key=True)
     code_generate = models.CharField(default='****', max_length=8, )
 
     # timing
@@ -71,6 +71,7 @@ class ForgotPassword(models.Model):
 
     # status
     proved = models.BooleanField(default=False)
+    used = models.BooleanField(default=False)
 
     # foreign key
     user = models.OneToOneField(User, on_delete=models.CASCADE)

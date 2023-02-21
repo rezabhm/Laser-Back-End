@@ -40,7 +40,7 @@ class ForgotPasswordAdmin(admin.ModelAdmin):
 
     fieldsets = (
 
-        ("Information", {"fields": ("code", 'code_generate', 'proved')}),
+        ("Information", {"fields": ("code", 'code_generate', 'proved', 'used')}),
         ("Timing", {"fields": ("expire_time",)}),
         ("Foreign Key", {"fields": ("user",)}),
 

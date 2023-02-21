@@ -273,3 +273,80 @@ class ForgotPassword(APIView):
             'status_text': status_txt,
 
         }, status=201)
+
+
+class ProveForgotPassword(APIView):
+
+    def get(self, request, *args, **kwargs):
+
+        return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['username', 'code']
+
+        )
+
+        if status:
+            return response
+
+        # check customer user
+        status, status_txt = core.prove_forgot_password(
+
+            username=json_data['username'],
+            code=json_data['code'],
+
+        )
+
+        return JsonResponse({
+
+            'status_code': status,
+            'status_text': status_txt,
+
+        }, status=201)
+
+
+class ChangePassword(APIView):
+
+    def get(self, request, *args, **kwargs):
+
+        return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['username', 'code', 'password']
+
+        )
+
+        if status:
+            return response
+
+        # check customer user
+        status, status_txt = core.change_password(
+
+            username=json_data['username'],
+            password=json_data['password'],
+            code=json_data['code'],
+
+        )
+
+        return JsonResponse({
+
+            'status_code': status,
+            'status_text': status_txt,
+
+        }, status=201)
