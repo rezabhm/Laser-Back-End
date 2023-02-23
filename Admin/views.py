@@ -1,4 +1,6 @@
 from django.http import JsonResponse
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
 from LIB import utils
@@ -7,15 +9,21 @@ from LIB import admin
 
 from . import models
 from . import serializer
+from . import swagger_schema
 
 # Create your views here.
 
 
-class OperatorProgramList(APIView):
+class OperatorProgramList(GenericAPIView):
 
-    def get(self, request, *args, **kwargs):
+    serializer_class = swagger_schema.OperatorProgramListSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
 
-        return authentication.get_error_response()
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
 
     def post(self, request, *args, **kwargs):
 
@@ -62,11 +70,16 @@ class OperatorProgramList(APIView):
             }, status=400)
 
 
-class SetOperatorProgram(APIView):
+class SetOperatorProgram(GenericAPIView):
 
-    def get(self, request, *args, **kwargs):
+    serializer_class = swagger_schema.SetOperatorSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
 
-        return authentication.get_error_response()
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
 
     def post(self, request, *args, **kwargs):
 

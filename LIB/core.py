@@ -1,4 +1,5 @@
 from Core import models
+from Core import serializer
 from . import authentication
 from LIB import utils
 from SmsService import SMS
@@ -131,11 +132,11 @@ def login(username, password):
 
     except:
 
-        return 400, "wrong username", None
+        return 400, "wrong username", None, None
 
     # password
     if user.password != authentication.password_hash(password):
-        return 400, "wrong password", None
+        return 400, "wrong password", None, None
 
     # store operator enter time
     user_enter_time(user)
@@ -143,7 +144,7 @@ def login(username, password):
     # generate token
     token = create_token(user)
 
-    return 200, 'success', token
+    return 200, 'success', token, user.user_type
 
 
 def user_enter_time(user):
@@ -364,3 +365,83 @@ def change_password(username, password, code):
     else:
 
         return 400, 'wrong username'
+
+
+def customer_add_to_charge(username):
+
+    """
+
+    add customer to charge
+
+    """
+
+    try:
+
+        # get customer
+        customer = models.Customer.objects.get(user__username=username)
+
+        # add to charge
+        customer.charge = True
+
+        # save
+        customer.save()
+
+        return 201, 'successfully ... '
+
+    except:
+
+        return 400, 'wrong username'
+
+
+def delete_user(username):
+
+    """
+
+    add customer to charge
+
+    """
+
+    try:
+
+        # get user
+        user = models.User.objects.get(username=username)
+
+        if user.user_type == 'c':
+
+            # get user
+            customer = models.Customer.objects.get(user__username=username)
+
+            # delete
+            customer.delete()
+
+        # delete
+        user.delete()
+
+        return 201, 'successfully ... '
+
+    except:
+
+        return 400, 'wrong username'
+
+
+def customer_information(username):
+
+    """
+
+    add customer to charge
+
+    """
+
+    # get customer
+    customer_inf = models.Customer.objects.get(user__username=username)
+    customer = models.User.objects.get(username=username)
+
+    # serialize
+    customer_inf_serializer = serializer.CustomerSerializer(instance=customer_inf)
+    customer_serializer = serializer.UserSerializer(instance=customer)
+
+    return 201, 'successfully ... ', customer_serializer.data, customer_inf_serializer.data
+
+    # except:
+    #
+    #     return 400, 'wrong username', None, None

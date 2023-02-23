@@ -94,10 +94,16 @@ def split_date(date):
 
 def decode_reqeust_json(request):
 
-    json_unicode = request.body.decode('utf-8')
-    json_data = json.loads(json_unicode)
+    try:
 
-    return json_data
+        json_unicode = request.data.decode('utf-8')
+        json_data = json.loads(json_unicode)
+
+        return json_data
+
+    except:
+
+        return request.data
 
 
 def cvt_solar_date2ad_int(date):

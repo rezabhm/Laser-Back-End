@@ -14,10 +14,24 @@ class UserSerializer(serializers.ModelSerializer):
         model = models.User
         fields = [
 
-            'id',
-            'date_str',
-            'program_turn',
-            'operator_name',
-            'operator',
+            'username',
+            'name',
+            'last_name',
+            'phone_number',
+            'user_type'
 
         ]
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Customer
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Comment
+        fields = '__all__'

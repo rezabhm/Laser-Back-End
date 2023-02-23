@@ -125,6 +125,7 @@ class Customer(models.Model):
     drug_hist = models.BooleanField(default=False)
     decease_hist = models.BooleanField(default=False)
     doctor = models.CharField(max_length=50)
+    charge = models.BooleanField(default=False)
 
     # foreign key
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default='')

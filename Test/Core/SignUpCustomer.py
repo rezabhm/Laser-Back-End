@@ -13,9 +13,9 @@ json_request = {
     'national_code': '4125963214578',
     'address': 'znj',
     'house_number': '3347582695',
-    'drug_hist':True,
+    'drug_hist': True,
     'decease_hist': False,
-    'doctor': 'sosan',
+    'door': 'sosan',
 
 }
 
