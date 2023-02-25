@@ -432,16 +432,119 @@ def customer_information(username):
 
     """
 
-    # get customer
-    customer_inf = models.Customer.objects.get(user__username=username)
-    customer = models.User.objects.get(username=username)
+    try:
 
-    # serialize
-    customer_inf_serializer = serializer.CustomerSerializer(instance=customer_inf)
-    customer_serializer = serializer.UserSerializer(instance=customer)
+        # get customer
+        customer_inf = models.Customer.objects.get(user__username=username)
+        customer = models.User.objects.get(username=username)
 
-    return 201, 'successfully ... ', customer_serializer.data, customer_inf_serializer.data
+        # serialize
+        customer_inf_serializer = serializer.CustomerSerializer(instance=customer_inf)
+        customer_serializer = serializer.UserSerializer(instance=customer)
 
-    # except:
-    #
-    #     return 400, 'wrong username', None, None
+        return 201, 'successfully ... ', customer_serializer.data, customer_inf_serializer.data
+
+    except:
+
+        return 400, 'wrong username', None, None
+
+
+def change_user_information(json_data):
+
+    """
+
+    change user's information
+
+    """
+
+    try:
+
+        # get user
+        user = models.User.objects.get(username=json_data['username'])
+        token = models.Token.objects.get(token_code=json_data['token'])
+
+        if json_data['username'] == token.user.username or token.user.user_type == 'a':
+
+            # update param
+            user.phone_number = json_data['phone_number'] if len(str(json_data['phone_number'])) > 0 else user.phone_number
+            user.name = json_data['name'] if len(str(json_data['name'])) > 0 else user.name
+            user.last_name = json_data['last_name'] if len(str(json_data['last_name'])) > 0 else user.last_name
+            user.user_type = json_data['user_type'] if len(str(json_data['user_type'])) > 0 and json_data['user_type'] != 'a' else user.user_type
+
+            # save
+            user.save()
+
+            if token.user.user_type == 'c':
+
+                # customer
+                customer = models.Customer.objects.get(user__username= json_data['username'])
+
+                # set parameter
+                customer.doctor = json_data['doctor']
+                customer.address = json_data['address']
+                customer.house_number = json_data['house_number']
+                customer.drug_hist = json_data['drug_hist']
+                customer.decease_hist = json_data['decease_hist']
+
+                # save
+                customer.save()
+
+            return 201, 'successfully'
+
+        else:
+
+            return 400, "you didn't have access to change information"
+
+    except:
+
+        return 400, 'wrong username'
+
+
+def enter_exit_operator(username):
+
+    """
+
+    record operator's enter/exit time
+
+    """
+
+    # check username
+    try:
+
+        user = models.User.objects.get(username=username)
+
+    except:
+
+        return 400, 'wrong username'
+
+    # check user entered or didn't
+    enter_exit_operator_list = models.EmployeeEnterExit.objects.filter(user__username=username).filter(exited=False)
+
+    if len(enter_exit_operator_list) > 0:
+
+        # this condition means we record users enter time, and we must add exit time
+        exit_obj = enter_exit_operator_list[0]
+
+        # set parameter
+        exit_obj.exit_time_int = time.time()
+        exit_obj.exit_time_str = utils.time_int2str(time.time())
+        exit_obj.exited = True
+
+        # save
+        exit_obj.save()
+
+    else:
+
+        # we must record enter time
+        enter_obj = models.EmployeeEnterExit()
+
+        # set parameter
+        enter_obj.id = str(uuid4().int)
+        enter_obj.enter_time_int = time.time()
+        enter_obj.enter_time_str = utils.time_int2str(time.time())
+        enter_obj.user = user
+
+        # save
+        enter_obj.save()
+
+    return 201, 'successfully'

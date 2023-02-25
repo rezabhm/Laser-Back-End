@@ -826,3 +826,118 @@ class CustomerInf(GenericAPIView):
                 'status': token_status_text,
 
             }, status=400)
+
+
+class ChangeUserInformation(GenericAPIView):
+
+    serializer_class = swagger_schema.SignUpSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['token', 'username', 'name', 'last_name', 'phone_number', 'national_code', 'address',
+             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type']
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            token=json_data['token'],
+            access_user_type=['a', 'r', 'c']
+
+        )
+
+        if token_status == 201:
+
+            # get customer
+            status_code, status_text = core.change_user_information(json_data)
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status_text': status_text,
+
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class EnterExitOperator(GenericAPIView):
+
+    serializer_class = swagger_schema.TokenUsernameSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['token', 'username']
+
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            token=json_data['token'],
+            access_user_type=['r', 'a']
+
+        )
+
+        if token_status == 201:
+
+            status_code, status_text = core.enter_exit_operator(json_data['username'])
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status_text': status_text,
+
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)

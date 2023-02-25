@@ -19,8 +19,7 @@ urlpatterns = [
     re_path(r'^customer/add/to/charge/$', CustomerAdd2Charge.as_view(), name='CustomerAdd2Charge'),
     re_path(r'^delete/user/$', DeleteUser.as_view(), name='DeleteUser'),
     re_path(r'^customer/information/$', CustomerInf.as_view(), name='CustomerInf'),
-    # re_path(r'^change/user/information/$', ChangeUserInf.as_view(), name='ChangeUserInf'),
-    # re_path(r'^edit/information/$', EditInf.as_view(), name='EditInf'),
-    # re_path(r'^enter/exit/operator/$', EnterExitOperator.as_view(), name='EnterExitOperator'),
+    re_path(r'^change/user/information/$', ChangeUserInformation.as_view(), name='ChangeUserInf'),
+    re_path(r'^enter/exit/operator/$', EnterExitOperator.as_view(), name='EnterExitOperator'),
 
 ]
