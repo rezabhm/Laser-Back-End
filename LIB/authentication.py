@@ -74,6 +74,28 @@ def check_request_json(req_json, param_list):
     return False, None
 
 
+def check_get(request, param_list):
+
+    """
+
+    this function check did json request math param list or not
+
+    """
+
+    for key in param_list:
+
+        if key not in request.GET.keys():
+
+            return True, JsonResponse(
+
+                        {'status_code': 400, 'result': "invalid input parameter", 'parameter': param_list},
+                        status=400
+
+                    )
+
+    return False, None
+
+
 def password_hash(password):
 
     """

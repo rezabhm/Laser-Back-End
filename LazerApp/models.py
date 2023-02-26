@@ -13,6 +13,7 @@ class LaserArea(models.Model):
 
     # information
     name = models.CharField(max_length=50, primary_key=True)
+    current_price = models.FloatField(default=0.0)
 
     # this param define after how many day's we must reset laser operation session (day)
     deadline_reset = models.IntegerField(default=30)
@@ -42,6 +43,9 @@ class LaserAreaInformation(models.Model):
 
     end_time_int = models.FloatField(default=0.0)
     end_time_str = models.CharField(default='-', max_length=25)
+
+    # this param determine operate time (minute)
+    operate_time = models.IntegerField(default=5)
 
     # foreign key
     laser = models.ForeignKey(LaserArea, on_delete=models.CASCADE)

@@ -11,10 +11,10 @@ class ReserveAdmin(admin.ModelAdmin):
     fieldsets = (
 
         ("Information", {"fields": ("id", 'session_number', 'reserve_type')}),
-        ("Status", {"fields": ("online_reserve", 'charge', 'payed')}),
+        ("Status", {"fields": ("online_reserve", 'charge', 'payed', 'used_off_code')}),
         ("Price", {"fields": ("total_price_amount", 'total_payment_amount')}),
         ("Timing", {"fields": ("reserve_time_int", 'reserve_time_str', 'request_time_int', 'request_time_str')}),
-        ("Foreign Key", {"fields": ("user", 'laser_area')}),
+        ("Foreign Key", {"fields": ("user", 'laser_area', 'off_code')}),
 
     )
 

@@ -3,6 +3,7 @@ from Core import models as core_model
 from LazerApp import models as laser_model
 from Config import config
 
+
 # Create your models here.
 
 
@@ -23,6 +24,7 @@ class Reserve(models.Model):
     online_reserve = models.BooleanField(default=True)
     charge = models.BooleanField(default=False)
     payed = models.BooleanField(default=False)
+    used_off_code = models.BooleanField(default=False)
 
     # price
     total_price_amount = models.FloatField()
@@ -38,6 +40,7 @@ class Reserve(models.Model):
     # foreign key
     user = models.ForeignKey(core_model.User, on_delete=models.PROTECT)
     laser_area = models.ForeignKey(laser_model.LaserAreaInformation, on_delete=models.PROTECT)
+    off_code = models.CharField(max_length=10, null=True)
 
     def __str__(self):
         return self.id
