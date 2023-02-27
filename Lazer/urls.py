@@ -27,12 +27,33 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_swagger.views import get_swagger_view
 
+
+from rest_framework import response, schemas
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
+
+
+class CustomRenderer(OpenAPIRenderer):
+    def get_customizations(self):
+        data = super().get_customizations()
+        data['host'] = 'backend.lianalaser.com/'
+        return data
+
+
+@api_view()
+@renderer_classes([SwaggerUIRenderer, CustomRenderer])
+def swagger_view(request):
+    generator = schemas.SchemaGenerator(title='Your title')
+    return response.Response(generator.get_schema(request=request))
+
+
 schema_view = get_swagger_view(title='Laser API')
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('swagger/', schema_view),
+    path('docs/', swagger_view),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('Admin/', include('Admin.urls')),
     path('Core/', include('Core.urls')),
