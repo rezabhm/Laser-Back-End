@@ -199,7 +199,7 @@ class DeleteLaserArea(GenericAPIView):
 
     serializer_class = swagger_schema.DeleteLaserArea
     permission_classes = (AllowAny,)
-    allowed_methods = ('DELETE',)
+    allowed_methods = ('POST',)
 
     #
     # def get(self, request, *args, **kwargs):

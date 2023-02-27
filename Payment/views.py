@@ -68,7 +68,7 @@ class OffCodeDelete(GenericAPIView):
 
     serializer_class = swagger_schema.OffCodeDeleteSerializer
     permission_classes = (AllowAny,)
-    allowed_methods = ('DELETE',)
+    allowed_methods = ('POST',)
 
     def post(self, request, *args, **kwargs):
 
