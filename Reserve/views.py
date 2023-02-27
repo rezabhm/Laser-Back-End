@@ -85,7 +85,7 @@ class ReserveList(GenericAPIView):
 class UserReserveList(GenericAPIView):
     """
 
-    گزارش گیری نوبت ها ( در صورت خالی وارد کردن ('') پارامتر های ورودی نوبت های روز را میدهد)
+    لیست نوبت های مراجعین را بر میگرداند
 
     """
 
