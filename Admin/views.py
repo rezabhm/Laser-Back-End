@@ -16,6 +16,12 @@ from . import swagger_schema
 
 class OperatorProgramList(GenericAPIView):
 
+    """
+
+    لیست برنامه اپراتور ها را بر میگرداند
+
+    """
+
     serializer_class = swagger_schema.OperatorProgramListSerializer
     permission_classes = (AllowAny,)
     allowed_methods = ('POST',)
@@ -71,6 +77,12 @@ class OperatorProgramList(GenericAPIView):
 
 
 class SetOperatorProgram(GenericAPIView):
+
+    """
+
+    تنظیم برنامه اپراتور ها
+
+    """
 
     serializer_class = swagger_schema.SetOperatorSerializer
     permission_classes = (AllowAny,)
@@ -139,4 +151,30 @@ class SetOperatorProgram(GenericAPIView):
                 'status': token_status_text,
 
             }, status=400)
+
+
+class WeekTime(GenericAPIView):
+
+    """
+
+    تاریخ شنبه ها را میدهد
+
+    """
+
+    serializer_class = swagger_schema.WeekTime
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    def get(self, request, week, *args, **kwargs):
+
+        date = admin.week_time(week)
+
+        return JsonResponse({
+
+            'status_code': 201,
+            'status_text': 'successfully ...',
+            'date': date
+
+
+        }, status=201)
 

@@ -3,7 +3,6 @@ from Core import models as core_model
 from LazerApp import models as laser_model
 from Config import config
 
-
 # Create your models here.
 
 
@@ -39,8 +38,10 @@ class Reserve(models.Model):
 
     # foreign key
     user = models.ForeignKey(core_model.User, on_delete=models.PROTECT)
-    laser_area = models.ForeignKey(laser_model.LaserAreaInformation, on_delete=models.PROTECT)
     off_code = models.CharField(max_length=10, null=True)
+    laser_area = models.ForeignKey(laser_model.LaserArea, on_delete=models.PROTECT, null=True)
+    laser_area_list = models.ManyToManyField(laser_model.LaserAreaInformation)
+    laser_area_name = models.TextField(default='-', max_length=25)
 
     def __str__(self):
         return self.id

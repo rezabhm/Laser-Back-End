@@ -14,7 +14,7 @@ class OffCodeList(GenericAPIView):
 
     """
 
-    return Laser Area List
+    لیست کد ها تخفیف
 
     """
 
@@ -60,6 +60,11 @@ class OffCodeList(GenericAPIView):
 
 
 class OffCodeDelete(GenericAPIView):
+    """
+
+    حذف کد تخفیف
+
+    """
 
     serializer_class = swagger_schema.OffCodeDeleteSerializer
     permission_classes = (AllowAny,)
@@ -116,6 +121,11 @@ class OffCodeDelete(GenericAPIView):
 
 
 class OffCodeCreate(GenericAPIView):
+    """
+
+    تولید کد تخفیف
+
+    """
 
     serializer_class = swagger_schema.OffCodeCreateSerializer
     permission_classes = (AllowAny,)
@@ -172,6 +182,11 @@ class OffCodeCreate(GenericAPIView):
 
 
 class OffCodeAddReserve(GenericAPIView):
+    """
+
+    اضافه کردن کد تخفیف به رزرو
+
+    """
 
     serializer_class = swagger_schema.OffCodeAddReserveSerializer
     permission_classes = (AllowAny,)
@@ -228,6 +243,11 @@ class OffCodeAddReserve(GenericAPIView):
 
 
 class MultiplePayment(GenericAPIView):
+    """
+
+    پرداخت های نوبت
+
+    """
 
     serializer_class = swagger_schema.OffCodeAddReserveSerializer
     permission_classes = (AllowAny,)

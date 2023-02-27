@@ -14,7 +14,7 @@ class Operator(GenericAPIView):
 
     """
 
-    return Laser Area List
+    اپراتور شیفت
 
     """
 

@@ -216,3 +216,34 @@ def uc_program(op, op_model, cp_status):
         op['res'] = status_text
 
     return op
+
+
+def week_time(week_day):
+
+    """
+
+    return week's date
+
+    """
+
+    week = {
+
+        'Sat': 0,
+        'Sun': 1,
+        'Mon': 2,
+        'Tue': 3,
+        'Wed': 4,
+        'Thu': 5,
+        'Fri': 6,
+
+    }
+
+    current = time.time() + (int(week_day) * 7 * 24 * 60 * 60)
+
+    day = time.ctime(current).split(' ')[0]
+
+    now = utils.time_int2str(current).split(' ')[0]
+    now = utils.cvt_solar_date2ad_int(now) - (week[day] * 60 * 60 * 24)
+    now = utils.time_int2str(now).split(' ')[0]
+
+    return now

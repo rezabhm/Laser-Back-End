@@ -51,4 +51,4 @@ class LaserAreaInformation(models.Model):
     laser = models.ForeignKey(LaserArea, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.id
+        return self.laser.name

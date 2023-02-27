@@ -26,3 +26,8 @@ class SetOperatorSerializer(serializers.Serializer):
 
     token = serializers.CharField()
     operator_program_list = serializers.ListSerializer(child=serializers.DateField())
+
+
+class WeekTime(serializers.Serializer):
+
+    week = serializers.IntegerField()

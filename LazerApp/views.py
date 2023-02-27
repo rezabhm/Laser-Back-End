@@ -13,7 +13,7 @@ class LaserAreaList(GenericAPIView):
 
     """
 
-    return Laser Area List
+    لیست نواحی لیزر
 
     """
 
@@ -59,6 +59,11 @@ class LaserAreaList(GenericAPIView):
 
 
 class AddNewLaserArea(GenericAPIView):
+    """
+
+    اضافه کردن ناحیه جدید
+
+    """
 
     serializer_class = swagger_schema.CreateLaserArea
     permission_classes = (AllowAny,)
@@ -120,6 +125,11 @@ class AddNewLaserArea(GenericAPIView):
 
 
 class EditLaserArea(GenericAPIView):
+    """
+
+    ویرایش اطلاعات ناحیه لیزر
+
+    """
 
     serializer_class = swagger_schema.EditLaserArea
     permission_classes = (AllowAny,)
@@ -181,6 +191,11 @@ class EditLaserArea(GenericAPIView):
 
 
 class DeleteLaserArea(GenericAPIView):
+    """
+
+    حذف ناحیه لیزر
+
+    """
 
     serializer_class = swagger_schema.DeleteLaserArea
     permission_classes = (AllowAny,)

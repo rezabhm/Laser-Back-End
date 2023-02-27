@@ -16,6 +16,12 @@ from . import swagger_schema
 
 class SignUpCustomer(GenericAPIView):
 
+    """
+
+    ثیت نام مشتری توسط تمامی کاربران
+
+    """
+
     serializer_class = swagger_schema.SignUpSerializer
     permission_classes = (AllowAny,)
     allowed_methods = ('POST',)
@@ -85,6 +91,11 @@ class SignUpCustomer(GenericAPIView):
 
 
 class SignUpAdmin(GenericAPIView):
+    """
+
+    ثیت نام کاربران توسط مدیر
+
+    """
 
     serializer_class = swagger_schema.SignUpSerializer
     permission_classes = (AllowAny,)
@@ -161,6 +172,11 @@ class SignUpAdmin(GenericAPIView):
 
 
 class Login(GenericAPIView):
+    """
+
+    ورود کاربران
+
+    """
 
     serializer_class = swagger_schema.LoginSerializer
     permission_classes = (AllowAny,)
@@ -206,43 +222,34 @@ class Login(GenericAPIView):
 
 
 class LogOut(GenericAPIView):
+    """
+
+    لیست برنامه اپراتور ها را بر میگرداند
+
+    """
 
     serializer_class = swagger_schema.TokenOnlySerializer
     permission_classes = (AllowAny,)
-    allowed_methods = ('POST',)
+    allowed_methods = ('GET',)
 
     #
     # def get(self, request, *args, **kwargs):
     #
     #     return authentication.get_error_response()
 
-    def post(self, request, *args, **kwargs):
-
-        # decode json
-        json_data = utils.decode_reqeust_json(request)
-
-        # check input json param
-        status, response = authentication.check_request_json(
-
-            json_data,
-            ['token']
-
-        )
-
-        if status:
-            return response
+    def get(self, request, token, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            token=token,
             access_user_type=['a', 'r']
 
         )
 
         if token_status == 201:
 
-            core.logout(json_data['token'])
+            core.logout(token)
 
             return JsonResponse({
 
@@ -262,6 +269,11 @@ class LogOut(GenericAPIView):
 
 
 class ForgotPassword(GenericAPIView):
+    """
+
+    ارسال در خواست فراموشی رمز عبور
+
+    """
 
     serializer_class = swagger_schema.UsernameOnlySerializer
     permission_classes = (AllowAny,)
@@ -304,6 +316,11 @@ class ForgotPassword(GenericAPIView):
 
 
 class ProveForgotPassword(GenericAPIView):
+    """
+
+    تایید کد فراموشی رمز عبور
+
+    """
 
     serializer_class = swagger_schema.ProveForgotPassSerializer
     permission_classes = (AllowAny,)
@@ -347,8 +364,13 @@ class ProveForgotPassword(GenericAPIView):
 
 
 class ChangePassword(GenericAPIView):
+    """
 
-    serializer_class = swagger_schema.TokenOnlySerializer
+    تغییر رمز عبور
+
+    """
+
+    serializer_class = swagger_schema.ChangePasswordSerializer
     permission_classes = (AllowAny,)
     allowed_methods = ('POST',)
 
@@ -391,35 +413,27 @@ class ChangePassword(GenericAPIView):
 
 
 class UserList(GenericAPIView):
+    """
+
+    لیست تمامی کاربران
+
+    """
 
     serializer_class = swagger_schema.TokenOnlySerializer
     permission_classes = (AllowAny,)
-    allowed_methods = ('POST',)
+    allowed_methods = ('GET',)
 
+    #
     # def get(self, request, *args, **kwargs):
     #
     #     return authentication.get_error_response()
 
-    def post(self, request, *args, **kwargs):
-
-        # decode json
-        json_data = utils.decode_reqeust_json(request)
-
-        # check input json param
-        status, response = authentication.check_request_json(
-
-            json_data,
-            ['token']
-
-        )
-
-        if status:
-            return response
+    def get(self, request, token, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            token=token,
             access_user_type=['a']
 
         )
@@ -452,36 +466,27 @@ class UserList(GenericAPIView):
 
 
 class OperatorList(GenericAPIView):
+    """
+
+    لیست اپراتور ها
+
+    """
 
     serializer_class = swagger_schema.TokenOnlySerializer
     permission_classes = (AllowAny,)
-    allowed_methods = ('POST',)
+    allowed_methods = ('GET',)
 
     #
     # def get(self, request, *args, **kwargs):
     #
     #     return authentication.get_error_response()
 
-    def post(self, request, *args, **kwargs):
-
-        # decode json
-        json_data = utils.decode_reqeust_json(request)
-
-        # check input json param
-        status, response = authentication.check_request_json(
-
-            json_data,
-            ['token']
-
-        )
-
-        if status:
-            return response
+    def get(self, request, token, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            token=token,
             access_user_type=['a']
 
         )
@@ -514,36 +519,27 @@ class OperatorList(GenericAPIView):
 
 
 class CustomerList(GenericAPIView):
+    """
+
+    لیست مراجعین (مشتری)
+
+    """
 
     serializer_class = swagger_schema.TokenOnlySerializer
     permission_classes = (AllowAny,)
-    allowed_methods = ('POST',)
+    allowed_methods = ('GET',)
 
     #
     # def get(self, request, *args, **kwargs):
     #
     #     return authentication.get_error_response()
 
-    def post(self, request, *args, **kwargs):
-
-        # decode json
-        json_data = utils.decode_reqeust_json(request)
-
-        # check input json param
-        status, response = authentication.check_request_json(
-
-            json_data,
-            ['token']
-
-        )
-
-        if status:
-            return response
+    def get(self, request, token, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            token=token,
             access_user_type=['a']
 
         )
@@ -581,36 +577,27 @@ class CustomerList(GenericAPIView):
 
 
 class CommentList(GenericAPIView):
+    """
+
+    لیست نظرات
+
+    """
 
     serializer_class = swagger_schema.TokenOnlySerializer
     permission_classes = (AllowAny,)
-    allowed_methods = ('POST',)
+    allowed_methods = ('GET',)
 
     #
     # def get(self, request, *args, **kwargs):
     #
     #     return authentication.get_error_response()
 
-    def post(self, request, *args, **kwargs):
-
-        # decode json
-        json_data = utils.decode_reqeust_json(request)
-
-        # check input json param
-        status, response = authentication.check_request_json(
-
-            json_data,
-            ['token']
-
-        )
-
-        if status:
-            return response
+    def get(self, request, token, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            token=token,
             access_user_type=['a']
 
         )
@@ -656,6 +643,11 @@ class CommentList(GenericAPIView):
 
 
 class CustomerAdd2Charge(GenericAPIView):
+    """
+
+    اضافه کردن مشتری به دوره شارژ
+
+    """
 
     serializer_class = swagger_schema.TokenUsernameSerializer
     permission_classes = (AllowAny,)
@@ -713,6 +705,11 @@ class CustomerAdd2Charge(GenericAPIView):
 
 
 class DeleteUser(GenericAPIView):
+    """
+
+    حذف کاربر توسط مدیر
+
+    """
 
     serializer_class = swagger_schema.TokenUsernameSerializer
     permission_classes = (AllowAny,)
@@ -770,6 +767,11 @@ class DeleteUser(GenericAPIView):
 
 
 class CustomerInf(GenericAPIView):
+    """
+
+    اطلاعات مشتری
+
+    """
 
     serializer_class = swagger_schema.TokenUsernameSerializer
     permission_classes = (AllowAny,)
@@ -829,6 +831,11 @@ class CustomerInf(GenericAPIView):
 
 
 class ChangeUserInformation(GenericAPIView):
+    """
+
+    تغییر اطلاعات کاربران
+
+    """
 
     serializer_class = swagger_schema.SignUpSerializer
     permission_classes = (AllowAny,)
@@ -887,6 +894,11 @@ class ChangeUserInformation(GenericAPIView):
 
 
 class EnterExitOperator(GenericAPIView):
+    """
+
+    ورود خروج اپراتور ها
+
+    """
 
     serializer_class = swagger_schema.TokenUsernameSerializer
     permission_classes = (AllowAny,)
