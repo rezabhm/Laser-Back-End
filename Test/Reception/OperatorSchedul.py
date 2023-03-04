@@ -2,11 +2,10 @@ import requests
 import json
 
 
-token = '1'
 
 src = 'http://127.0.0.1:8000/Reception/'
 
-r = requests.get(src + f'operator/token={token}/')
+r = requests.get(src + f'operator/', headers={'Token':'1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

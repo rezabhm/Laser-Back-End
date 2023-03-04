@@ -77,7 +77,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Admin/'
 
-r = requests.post(src + 'set/operator/program/', json=json_request)
+r = requests.post(src + 'set/operator/program/', json=json_request, headers={'token': '1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

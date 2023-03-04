@@ -4,7 +4,6 @@ import json
 
 json_request = {
 
-    'token': '1',
     'reserve': '232'
 
 }
@@ -12,7 +11,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Reserve/'
 
-r = requests.post(src + 'reserve/information/', json=json_request)
+r = requests.post(src + 'reserve/information/', json=json_request, headers={'Token':'1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

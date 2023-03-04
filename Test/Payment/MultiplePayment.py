@@ -4,7 +4,6 @@ import json
 
 json_request = {
 
-    'token': '1',
     'reserve': '21',
     'payment_list': [
 
@@ -30,7 +29,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Payment/'
 
-r = requests.post(src + 'multiple/payment/', json=json_request)
+r = requests.post(src + 'multiple/payment/', json=json_request, headers={'Token':'1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

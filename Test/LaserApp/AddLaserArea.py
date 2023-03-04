@@ -4,7 +4,6 @@ import json
 
 json_request = {
 
-    'token': '1',
     'name': 'کون',
     'price': '850000',
     'operate_time': 25,
@@ -15,7 +14,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Laser/'
 
-r = requests.post(src + 'add/new/laser/area/', json=json_request)
+r = requests.post(src + 'add/new/laser/area/', headers={'Token':'1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

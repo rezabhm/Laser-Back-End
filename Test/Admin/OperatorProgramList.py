@@ -1,18 +1,11 @@
 import requests
 import json
 
-
-json_request = {
-
-    'token': '2',
-    'date': '1401/11/3',
-
-}
-
+token = '1'
 
 src = 'http://127.0.0.1:8000/Admin/'
 
-r = requests.post(src + 'operator/program/list/', json=json_request)
+r = requests.get(src + 'operator/program/list/1401/3/1', headers={'token': '1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

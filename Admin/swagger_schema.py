@@ -11,7 +11,9 @@ this file contain POST request's parameter for swagger
 class OperatorProgramListSerializer(serializers.Serializer):
 
     token = serializers.CharField()
-    date = serializers.CharField()
+    date_year = serializers.IntegerField()
+    date_month = serializers.IntegerField()
+    date_day = serializers.IntegerField()
 
 
 class OperatorProgramSerializer(serializers.Serializer):

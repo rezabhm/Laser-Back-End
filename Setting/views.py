@@ -21,12 +21,12 @@ class SettingList(GenericAPIView):
     permission_classes = (AllowAny,)
     allowed_methods = ('GET',)
 
-    def get(self, request, token, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=token,
+            request,
             access_user_type=['a']
 
         )
@@ -95,7 +95,7 @@ class ChangeSetting(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'morning_time', 'afternoon_time', 'trust_price',]
+            ['morning_time', 'afternoon_time', 'trust_price',]
 
         )
 
@@ -105,7 +105,7 @@ class ChangeSetting(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a']
 
         )

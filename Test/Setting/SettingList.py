@@ -5,7 +5,7 @@ token = '9b897f2c5e5344ea87b9bb55e51a59d7'
 
 src = 'http://127.0.0.1:8000/Setting/'
 
-r = requests.get(src + f'list/token={token}/')
+r = requests.get(src + f'list/', headers={'Token':'1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

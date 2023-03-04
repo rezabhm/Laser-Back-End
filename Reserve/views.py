@@ -34,7 +34,7 @@ class ReserveList(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'from_', 'to']
+            ['from_', 'to']
 
         )
 
@@ -44,7 +44,7 @@ class ReserveList(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r']
 
         )
@@ -107,7 +107,7 @@ class UserReserveList(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username']
+            ['username']
 
         )
 
@@ -117,7 +117,7 @@ class UserReserveList(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -174,7 +174,7 @@ class ReserveInformation(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'reserve']
+            ['reserve']
 
         )
 
@@ -184,7 +184,7 @@ class ReserveInformation(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -242,7 +242,7 @@ class CancelReserve(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'reserve', 'cancel_type']
+            ['reserve', 'cancel_type']
 
         )
 
@@ -252,7 +252,7 @@ class CancelReserve(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -309,7 +309,7 @@ class ReserveLaserArea(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'reserve']
+            ['reserve']
 
         )
 
@@ -319,7 +319,7 @@ class ReserveLaserArea(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -377,7 +377,7 @@ class EditReserveLaserArea(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'reserve', 'laser_area_list']
+            ['reserve', 'laser_area_list']
 
         )
 
@@ -387,7 +387,7 @@ class EditReserveLaserArea(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -444,7 +444,7 @@ class ReceptionAddReserve(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username']
+            ['username']
 
         )
 
@@ -454,7 +454,7 @@ class ReceptionAddReserve(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r']
 
         )

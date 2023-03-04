@@ -40,7 +40,7 @@ class SignUpCustomer(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username', 'name', 'last_name', 'password', 'phone_number', 'national_code', 'address',
+            ['username', 'name', 'last_name', 'password', 'phone_number', 'national_code', 'address',
              'house_number', 'drug_hist', 'decease_hist', 'doctor']
 
         )
@@ -51,7 +51,7 @@ class SignUpCustomer(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -115,7 +115,7 @@ class SignUpAdmin(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username', 'name', 'last_name', 'password', 'phone_number', 'national_code', 'address',
+            ['username', 'name', 'last_name', 'password', 'phone_number', 'national_code', 'address',
              'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type']
 
         )
@@ -126,7 +126,7 @@ class SignUpAdmin(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a']
 
         )
@@ -224,7 +224,7 @@ class Login(GenericAPIView):
 class LogOut(GenericAPIView):
     """
 
-    لیست برنامه اپراتور ها را بر میگرداند
+    ثبت حروج کاربران
 
     """
 
@@ -237,19 +237,19 @@ class LogOut(GenericAPIView):
     #
     #     return authentication.get_error_response()
 
-    def get(self, request, token, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=token,
+            request,
             access_user_type=['a', 'r']
 
         )
 
         if token_status == 201:
 
-            core.logout(token)
+            core.logout(request.headers['Token'])
 
             return JsonResponse({
 
@@ -428,12 +428,12 @@ class UserList(GenericAPIView):
     #
     #     return authentication.get_error_response()
 
-    def get(self, request, token, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=token,
+            request,
             access_user_type=['a']
 
         )
@@ -481,12 +481,12 @@ class OperatorList(GenericAPIView):
     #
     #     return authentication.get_error_response()
 
-    def get(self, request, token, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=token,
+            request,
             access_user_type=['a']
 
         )
@@ -534,12 +534,12 @@ class CustomerList(GenericAPIView):
     #
     #     return authentication.get_error_response()
 
-    def get(self, request, token, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=token,
+            request,
             access_user_type=['a']
 
         )
@@ -592,12 +592,12 @@ class CommentList(GenericAPIView):
     #
     #     return authentication.get_error_response()
 
-    def get(self, request, token, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=token,
+            request,
             access_user_type=['a']
 
         )
@@ -667,7 +667,7 @@ class CustomerAdd2Charge(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username']
+            ['username']
 
         )
 
@@ -677,7 +677,7 @@ class CustomerAdd2Charge(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r']
 
         )
@@ -729,7 +729,7 @@ class DeleteUser(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username']
+            ['username']
 
         )
 
@@ -739,7 +739,7 @@ class DeleteUser(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a']
 
         )
@@ -791,7 +791,7 @@ class CustomerInf(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username']
+            ['username']
 
         )
 
@@ -801,7 +801,7 @@ class CustomerInf(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -855,7 +855,7 @@ class ChangeUserInformation(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username', 'name', 'last_name', 'phone_number', 'national_code', 'address',
+            ['username', 'name', 'last_name', 'phone_number', 'national_code', 'address',
              'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type']
         )
 
@@ -865,7 +865,7 @@ class ChangeUserInformation(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -873,7 +873,7 @@ class ChangeUserInformation(GenericAPIView):
         if token_status == 201:
 
             # get customer
-            status_code, status_text = core.change_user_information(json_data)
+            status_code, status_text = core.change_user_information(json_data, request)
 
             return JsonResponse({
 
@@ -918,7 +918,7 @@ class EnterExitOperator(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'username']
+            ['username']
 
         )
 
@@ -928,7 +928,7 @@ class EnterExitOperator(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['r', 'a']
 
         )

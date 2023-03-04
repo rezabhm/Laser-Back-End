@@ -2,17 +2,10 @@ import requests
 import json
 
 
-json_request = {
-
-    'token': '2',
-
-
-}
-
 
 src = 'http://127.0.0.1:8000/Core/'
 
-r = requests.post(src + 'user/list/', json=json_request)
+r = requests.post(src + 'user/list/', headers={'Token':'1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

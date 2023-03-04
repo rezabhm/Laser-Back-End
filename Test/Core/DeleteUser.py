@@ -4,7 +4,6 @@ import json
 
 json_request = {
 
-    'token': '1',
     'username': 'ahmad'
 
 
@@ -13,7 +12,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Core/'
 
-r = requests.post(src + 'delete/user/', json=json_request)
+r = requests.post(src + 'delete/user/', json=json_request, headers={'Token':'1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

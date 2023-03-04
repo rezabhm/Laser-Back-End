@@ -5,6 +5,6 @@ My_app = 'Reception'
 
 urlpatterns = [
 
-    re_path(r'^operator/token=(?P<token>[\w]+)/$', Operator.as_view(), name='Operator'),
+    re_path(r'^operator/$', Operator.as_view(), name='Operator'),
 
 ]

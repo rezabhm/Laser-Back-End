@@ -5,7 +5,7 @@ from Core import models as core_model
 import time
 
 
-def check_token(token, access_user_type=[]):
+def check_token(requests, access_user_type=[]):
 
     """
 
@@ -13,26 +13,34 @@ def check_token(token, access_user_type=[]):
 
     """
 
-    # get token from DB
-    token_list = core_model.Token.objects.filter(token_code=token)
+    try:
 
-    if len(token_list) > 0:
+        token = requests.headers['Token']
 
-        token = token_list[0]
+        # get token from DB
+        token_list = core_model.Token.objects.filter(token_code=token)
 
-        # check this user can access to this page or not
-        user = token.user
-        if user.user_type not in access_user_type:
-            return 400, "forbidden access"
+        if len(token_list) > 0:
 
-        # check token is valid or not
-        if time.time() < token.token_expire_time_int:
-            return 201, "your token is valid"
+            token = token_list[0]
 
+            # check this user can access to this page or not
+            user = token.user
+            if user.user_type not in access_user_type:
+                return 400, "forbidden access"
+
+            # check token is valid or not
+            if time.time() < token.token_expire_time_int:
+                return 201, "your token is valid"
+
+            else:
+                return 400, "your token's time are expired"
         else:
-            return 400, "your token's time are expired"
-    else:
-        return 400, "your token isn't valid ."
+            return 400, "your token isn't valid ."
+
+    except:
+
+        return 400, "your didn't add token with <Token> param to headers"
 
 
 def get_error_response():

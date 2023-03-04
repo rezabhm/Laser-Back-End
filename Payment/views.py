@@ -22,12 +22,12 @@ class OffCodeList(GenericAPIView):
     permission_classes = (AllowAny,)
     allowed_methods = ('GET',)
 
-    def get(self, request, token, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=token,
+            request,
             access_user_type=['a']
 
         )
@@ -79,7 +79,7 @@ class OffCodeDelete(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'off_code', ]
+            ['off_code', ]
 
         )
 
@@ -89,7 +89,7 @@ class OffCodeDelete(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a']
 
         )
@@ -140,7 +140,7 @@ class OffCodeCreate(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'off_code', 'amount', ]
+            ['off_code', 'amount', ]
 
         )
 
@@ -150,7 +150,7 @@ class OffCodeCreate(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a']
 
         )
@@ -201,7 +201,7 @@ class OffCodeAddReserve(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'off_code', 'reserve', ]
+            ['off_code', 'reserve', ]
 
         )
 
@@ -211,7 +211,7 @@ class OffCodeAddReserve(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r']
 
         )
@@ -262,7 +262,7 @@ class MultiplePayment(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'payment_list', 'reserve', ]
+            ['payment_list', 'reserve', ]
 
         )
 
@@ -272,7 +272,7 @@ class MultiplePayment(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a', 'r']
 
         )

@@ -10,7 +10,6 @@ this file contain POST request's parameter for swagger
 
 class SignUpSerializer(serializers.Serializer):
 
-    token = serializers.CharField()
     username = serializers.CharField()
     name = serializers.CharField()
     last_name = serializers.CharField()
@@ -50,10 +49,9 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class TokenUsernameSerializer(serializers.Serializer):
 
-    token = serializers.CharField()
     username = serializers.CharField()
 
 
 class TokenOnlySerializer(serializers.Serializer):
 
-    token = serializers.CharField()
+    pass

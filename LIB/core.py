@@ -449,7 +449,7 @@ def customer_information(username):
         return 400, 'wrong username', None, None
 
 
-def change_user_information(json_data):
+def change_user_information(json_data, request):
 
     """
 
@@ -461,7 +461,7 @@ def change_user_information(json_data):
 
         # get user
         user = models.User.objects.get(username=json_data['username'])
-        token = models.Token.objects.get(token_code=json_data['token'])
+        token = models.Token.objects.get(token_code=request.headers['Token'])
 
         if json_data['username'] == token.user.username or token.user.user_type == 'a':
 

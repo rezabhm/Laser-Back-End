@@ -4,7 +4,6 @@ import json
 
 json_request = {
 
-    'token': '1',
     'off_code': 'Asd158',
     'amount': '99',
 
@@ -13,7 +12,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Payment/'
 
-r = requests.post(src + 'off/code/create/', json=json_request)
+r = requests.post(src + 'off/code/create/', json=json_request, headers={'Token':'1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

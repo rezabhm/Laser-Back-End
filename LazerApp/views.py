@@ -21,12 +21,12 @@ class LaserAreaList(GenericAPIView):
     permission_classes = (AllowAny,)
     allowed_methods = ('GET',)
 
-    def get(self, request, token, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=token,
+            request,
             access_user_type=['a', 'r', 'c']
 
         )
@@ -83,7 +83,7 @@ class AddNewLaserArea(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'name', 'price', 'deadline_reset', 'operate_time']
+            ['name', 'price', 'deadline_reset', 'operate_time']
 
         )
 
@@ -93,7 +93,7 @@ class AddNewLaserArea(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a']
 
         )
@@ -149,7 +149,7 @@ class EditLaserArea(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'name', 'price']
+            ['name', 'price']
 
         )
 
@@ -159,7 +159,7 @@ class EditLaserArea(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
+            request,
             access_user_type=['a']
 
         )
@@ -215,7 +215,7 @@ class DeleteLaserArea(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['token', 'name']
+            ['name']
 
         )
 
@@ -225,7 +225,6 @@ class DeleteLaserArea(GenericAPIView):
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
-            token=json_data['token'],
             access_user_type=['a']
 
         )
