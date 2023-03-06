@@ -21,5 +21,9 @@ urlpatterns = [
     re_path(r'^customer/information/$', CustomerInf.as_view(), name='CustomerInf'),
     re_path(r'^change/user/information/$', ChangeUserInformation.as_view(), name='ChangeUserInf'),
     re_path(r'^enter/exit/operator/$', EnterExitOperator.as_view(), name='EnterExitOperator'),
+    re_path(r'^add/comment/$', AddComment.as_view(), name='AddComment'),
+    re_path(r'^login/customer/(?P<username>[\w]+)/$', CustomerLogin.as_view(), name='CustomerLogin'),
+    re_path(r'^login/prove/code/$', CustomerLoginProveCode.as_view(), name='CustomerLoginProveCode'),
+    re_path(r'^add/customer/information/$', AddCustomerInf.as_view(), name='AddCustomerInf'),
 
 ]

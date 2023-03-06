@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Reception.apps.ReceptionConfig',
     'Reserve.apps.ReserveConfig',
     'Setting.apps.SettingConfig',
+    'ZarinPall.apps.ZarinpallConfig',
     'Core.apps.CoreConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -151,3 +152,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+MERCHANT = "00000000-0000-0000-0000-000000000000"
+
+SANDBOX = True

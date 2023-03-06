@@ -1,7 +1,7 @@
 import time
 import uuid
 
-from . import utils
+from . import utils, core
 from Reserve import models, serializer
 from LazerApp import serializer as laser_serializer
 from LazerApp import models as laser_model
@@ -235,3 +235,32 @@ def user_reserve_list(json_data):
     reserve.is_valid()
 
     return reserve.data
+
+
+def prove_reserve(token):
+
+    """
+
+    proved reserve
+
+    """
+
+    # get user from token
+    user, _ = core.get_user_from_token(token)
+
+    try:
+
+        # get reserve
+        reserve_obj = models.Reserve.objects.filter(user=user).get(reserve_type='pe')
+
+        # update param
+        reserve_obj.reserve_type = 'wa'
+
+        # save
+        reserve_obj.save()
+
+        return 200, 'successfully ...'
+
+    except:
+
+        return 400, "you didn't have pending reserve"

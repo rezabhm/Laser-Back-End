@@ -40,5 +40,6 @@ urlpatterns = [
     path('Reception/', include('Reception.urls')),
     path('Reserve/', include('Reserve.urls')),
     path('Setting/', include('Setting.urls')),
+    path('zarin/pall/', include('ZarinPall.urls')),
 
 ]

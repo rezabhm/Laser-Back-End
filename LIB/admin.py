@@ -160,6 +160,7 @@ def update_operator_program(op, operator_program):
 
     # check operator's name
     if operator_program['operator_name'] != op.operator_name:
+
         # update it
         op.operator_name = operator_program['operator_name']
 

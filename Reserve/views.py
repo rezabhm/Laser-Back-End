@@ -485,3 +485,46 @@ class ReceptionAddReserve(GenericAPIView):
                 'status': token_status_text,
 
             }, status=400)
+
+
+class ProveReserve(GenericAPIView):
+
+    """
+
+    نهایی سازی و تایید نوبت
+
+    """
+
+    serializer_class = swagger_schema.ReserveSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, *args, **kwargs):
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(request, access_user_type=['a'])
+
+        if token_status == 201:
+
+            status, status_text = reserve.prove_reserve(request.headers['Token'])
+
+            return JsonResponse({
+
+                'status_code': status,
+                'status': status_text,
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)

@@ -60,7 +60,7 @@ def create_user(data):
     user.name = data['name']
     user.last_name = data['last_name']
     user.phone_number = data['phone_number']
-    user.password = authentication.passowrd_hash(data['password'])
+    user.password = authentication.password_hash(data['password'])
     user.user_type = data['user_type']
 
     # save
@@ -548,3 +548,167 @@ def enter_exit_operator(username):
         enter_obj.save()
 
     return 201, 'successfully'
+
+
+def add_comment(comment_text, token):
+
+    """
+
+    create new comment
+
+    """
+
+    # get user
+    user, _ = get_user_from_token(token)
+
+    # create comment
+    comment = models.Comment(
+
+        id=str(uuid4().int),
+        comment_text=comment_text,
+        create_time_int=time.time(),
+        create_time_str=utils.time_int2str(time.time()),
+        user=user
+
+    )
+
+    # save
+    comment.save()
+
+    return 200, 'successfully create'
+
+
+def customer_login(json_data):
+
+    """
+
+    login customer
+
+    """
+
+    try:
+
+        # get user
+        user = models.User.objects.get(username=json_data['username'])
+
+        # get login code
+        login_code = models.ForgotPassword.objects.filter(expire_time__gte=time.time()).get(user=user)
+
+        if json_data['code'] == login_code.code_generate:
+
+            # update parameter
+            login_code.proved = True
+            login_code.used = True
+
+            # save
+            login_code.save()
+
+            return 201, 'proved ...'
+
+        else:
+
+            return 400, 'wrong code'
+
+
+
+    except:
+
+        return 400, 'wrong username'
+
+
+def customer_login_prove_code(json_data):
+    """
+
+    login customer
+
+    """
+
+    try:
+
+        # get user
+        user = models.User.objects.get(username=username)
+
+        # get login code
+        login_code = models.ForgotPassword.objects.get(user=user)
+
+        # set param
+        login_code.code_generate = f'{random.randint(99999, 999999)}'
+        login_code.expire_time = time.time() + (60 * 10)
+        login_code.used = False
+        login_code.proved = False
+
+        # save
+        login_code.save()
+
+    except:
+
+        # create user
+        user = models.User(
+
+            username=username,
+            user_type='c'
+
+        )
+
+        # save
+        user.save()
+
+        # create prove code
+        login_code = models.ForgotPassword(
+
+            id=str(uuid4().int),
+            code_generate=f'{random.randint(99999, 999999)}',
+            expire_time=time.time() + (60 * 10),
+            user=user
+
+        )
+
+        # save
+        login_code.save()
+
+    return 201, 'successfully ...'
+
+
+def customer_add_inf(json_data, token):
+
+    """
+
+    add customer information for signup
+
+    """
+
+    # check customer user
+    status = check_username(json_data['username'], user_type='c', national_code=json_data['national_code'])
+
+    if status:
+
+        user, _ = get_user_from_token(token)
+
+        # set parameter
+        user.name = json_data['name']
+        user.last_name = json_data['last_name']
+        user.phone_number = json_data['phone_number']
+
+        # save
+        user.save()
+
+        # create customer object
+        customer = models.Customer()
+
+        # set parameter
+        customer.national_code = json_data['national_code']
+        customer.address = json_data['address']
+        customer.house_number = json_data['house_number']
+        customer.drug_hist = json_data['drug_hist']
+        customer.decease_hist = json_data['decease_hist']
+        customer.doctor = json_data['doctor']
+        customer.user = user
+
+        # save
+        customer.save()
+
+        return 200, 'successfully'
+
+    else:
+
+        return 400, 'wrong token'

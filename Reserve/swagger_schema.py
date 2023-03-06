@@ -21,3 +21,8 @@ class CancelReserveSerializer(serializers.Serializer):
 
     reserve = serializers.CharField()
     cancel_type = serializers.CharField()
+
+
+class ReserveSerializer(serializers.Serializer):
+
+    reserve = serializers.CharField()

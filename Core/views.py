@@ -953,3 +953,221 @@ class EnterExitOperator(GenericAPIView):
                 'status': token_status_text,
 
             }, status=400)
+
+
+class AddComment(GenericAPIView):
+    """
+
+    اضافه کردن نظرات کاربران
+
+    """
+
+    serializer_class = swagger_schema.AddCommentSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['comment_text']
+
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['r', 'a', 'c']
+
+        )
+
+        if token_status == 201:
+
+            status_code, status_text = core.add_comment(json_data['comment_text'], request.headers['Token'])
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status_text': status_text,
+
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class CustomerLogin(GenericAPIView):
+
+    """
+
+    ورود مشتری
+
+    """
+
+    serializer_class = swagger_schema.TokenUsernameSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, username, *args, **kwargs):
+
+        status_code, status_text = core.customer_login(username)
+
+        return JsonResponse({
+
+            'status_code': status_code,
+            'status_text': status_text,
+
+
+        }, status=201)
+
+
+class CustomerLoginProveCode(GenericAPIView):
+    """
+
+    تایید کد ورود مشتری
+
+    """
+
+    serializer_class = swagger_schema.ProveForgotPassSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['username', 'code']
+
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['r', 'a', 'c']
+
+        )
+
+        if token_status == 201:
+
+            status_code, status_text = core.customer_login_prove_code(json_data)
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status_text': status_text,
+
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class AddCustomerInf(GenericAPIView):
+
+    """
+
+    تکمیل اطلاعات مشتری
+
+    """
+
+    serializer_class = swagger_schema.AddCustomerInfSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['name', 'last_name', 'phone_number', 'national_code', 'address',
+             'house_number', 'drug_hist', 'decease_hist', 'doctor']
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['r', 'a', 'c']
+
+        )
+
+        if token_status == 201:
+
+            status_code, status_text = core.customer_add_inf(json_data, request.headers['Token'])
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status_text': status_text,
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+

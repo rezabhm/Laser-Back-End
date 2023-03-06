@@ -12,5 +12,6 @@ urlpatterns = [
     re_path(r'^reserve/laser/area/$', ReserveLaserArea.as_view(), name='ReserveLaserArea'),
     re_path(r'^edit/reserve/laser/area/$', EditReserveLaserArea.as_view(), name='EditReserveLaserArea'),
     re_path(r'^reception/add/reserve/$', ReceptionAddReserve.as_view(), name='ReceptionAddReserve'),
+    re_path(r'^prove/reserve/$', ProveReserve.as_view(), name='ProveReserve'),
 
 ]
