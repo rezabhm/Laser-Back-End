@@ -253,13 +253,21 @@ def prove_reserve(token):
         # get reserve
         reserve_obj = models.Reserve.objects.filter(user=user).get(reserve_type='pe')
 
-        # update param
-        reserve_obj.reserve_type = 'wa'
+        # get trust price
+        with open('trust_price.txt') as fd:
+            trust_price = fd.read()
 
-        # save
-        reserve_obj.save()
+        if reserve_obj.total_payment_amount > float(trust_price):
 
-        return 200, 'successfully ...'
+            # update param
+            reserve_obj.reserve_type = 'wa'
+
+            # save
+            reserve_obj.save()
+
+            return 200, 'successfully ...'
+
+        return 400, "you didn't pay trust price"
 
     except:
 
