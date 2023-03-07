@@ -222,7 +222,7 @@ def get_user_from_token(token):
     try:
 
         token_obj = models.Token.objects.get(token_code=token)
-        return token.user, token_obj
+        return token_obj.user, token_obj
 
     except:
 

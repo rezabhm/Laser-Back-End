@@ -66,3 +66,51 @@ class PreReserve(models.Model):
 
     def __str__(self):
         return self.id
+
+
+class ReserveSchedule(models.Model):
+
+    """
+
+    this table will store all reserve schedule time
+
+    """
+
+    # information
+    id = models.CharField(max_length=128, primary_key=True)
+
+    # time information
+    date = models.CharField(max_length=10)
+    date_type = models.CharField(max_length=1, choices=(
+
+        ('m', 'morning'),
+        ('a', 'afternoon'),
+
+    ))
+
+    time_range = models.CharField(max_length=10, choices=(
+
+        ('8-10', '8-10'),
+        ('10-12', '10-12'),
+        ('12-14', '12-14'),
+        ('15-17', '15-17'),
+        ('17-19', '17-19'),
+        ('19-21', '19-21'),
+        ('21-23', '21-23'),
+        ('23-1', '23-1'),
+        ('1-3', '1-3'),
+        ('3-5', '3-5'),
+
+    ))
+
+    # determine total reserve time
+    total_reserve_time = models.FloatField(default=0.0)
+
+    # foreign key
+    operator = models.ForeignKey(core_model.User, on_delete=models.PROTECT)
+
+    class Meta:
+        ordering = ('date', )
+
+    def __str__(self):
+        return f'{self.date}_{self.date_type}_{self.time_range}'

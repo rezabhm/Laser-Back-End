@@ -26,3 +26,14 @@ class CancelReserveSerializer(serializers.Serializer):
 class ReserveSerializer(serializers.Serializer):
 
     reserve = serializers.CharField()
+
+
+class AddTimeReserveSerializer(serializers.Serializer):
+
+    date = serializers.CharField()
+    time_range = serializers.CharField()
+
+
+class PendingReserveSerializer(serializers.Serializer):
+
+    laser_area_list = serializers.ListField()

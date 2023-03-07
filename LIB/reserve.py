@@ -6,7 +6,7 @@ from Reserve import models, serializer
 from LazerApp import serializer as laser_serializer
 from LazerApp import models as laser_model
 from Core import models as core_model
-
+from Admin import models as admin_model
 
 def reserve_list(json_data):
 
@@ -272,3 +272,260 @@ def prove_reserve(token):
     except:
 
         return 400, "you didn't have pending reserve"
+
+
+def time_list(reserve_id):
+
+    """
+
+    return time_list
+
+    """
+
+    month_cvt = {
+
+        '1': 'فروردین',
+        '2': 'اردیبهشت',
+        '3': 'خرداد',
+
+        '4': 'تیر',
+        '5': 'مرداد',
+        '6': 'شهریور',
+
+        '7': 'مهر',
+        '8': 'آبان',
+        '9': 'آذر',
+
+        '10': 'دی',
+        '11': 'بهمن',
+        '12': 'اسفند',
+
+    }
+
+    try:
+
+        reserve_obj = models.Reserve.objects.get(id=reserve_id)
+        reserve_body_list = reserve_obj.laser_area_list.all()
+        reserve_time = 0.0
+
+        for laser_body in reserve_body_list:
+
+            reserve_time += laser_body.operate_time
+
+        time_need = 120 - reserve_time
+
+    except:
+
+        return 400, 'wrong reserve id', None
+
+    cu_time_int = time.time()
+
+    json_response = []
+
+    time_range = (
+
+        ('8-10', '8-10', 'm'),
+        ('10-12', '10-12', 'm'),
+        ('12-14', '12-14', 'm'),
+        ('15-17', '15-17', 'a'),
+        ('17-19', '17-19', 'a'),
+        ('19-21', '19-21', 'a'),
+        ('21-23', '21-23', 'a'),
+        ('23-1', '23-1', 'a'),
+        ('1-3', '1-3', 'a'),
+        ('3-5', '3-5', 'a'),
+
+    )
+
+    for day in range(5):
+
+        # get day's data
+        # morning time
+
+        cu_time_int += (60*60*24)
+        cu_time = utils.time_int2str(cu_time_int).split(' ')
+        cu_date = cu_time[0].split('/')
+        print(cu_time_int)
+        print(cu_time)
+
+        for time_, _, date_type in time_range:
+
+            try:
+
+                _ = models.ReserveSchedule.objects.filter(date=cu_time[0]).get(time_range=time_)
+
+            except:
+
+                operator_list = admin_model.OperatorProgram.objects.filter(date_str=cu_time[0]).filter(program_turn=date_type)
+                unknown_user = core_model.User.objects.get(username='unknown')
+                operator = operator_list[0] if len(operator_list) > 0 else unknown_user
+
+                reserve_schedule_obj = models.ReserveSchedule(
+
+                    id=str(uuid.uuid4().int),
+                    date=cu_time[0],
+                    date_type=date_type,
+                    time_range=time_,
+                    operator=operator,
+
+                )
+
+                # save
+                reserve_schedule_obj.save()
+
+        date_str = f'{cu_date[-1]} {month_cvt[cu_date[1]]}'
+        day_str = cu_time[1]
+
+        morning_time = models.ReserveSchedule.objects.filter(date_type='m').filter(date=cu_time[0]).filter(
+            total_reserve_time__lte=time_need)
+
+        morning_operator = f'{morning_time[0].operator.name} {morning_time[0].operator.last_name}'
+
+        morning_time = [data.time_range for data in morning_time]
+
+        afternoon_time = models.ReserveSchedule.objects.filter(date_type='a').filter(date=cu_time[0]).filter(
+            total_reserve_time__lte=time_need)
+
+        afternoon_operator = f'{afternoon_time[0].operator.name} {afternoon_time[0].operator.last_name}'
+
+        afternoon_time = [data.time_range for data in afternoon_time]
+
+        json_response.append({
+
+            'date': date_str,
+            'date_id': cu_time[0],
+            'day': day_str,
+            'morning_operator': morning_operator,
+            'afternoon_operator': afternoon_operator,
+            'morning_time': morning_time,
+            'afternoon_time': afternoon_time,
+            'time_length': len(morning_time) + len(afternoon_time),
+
+        })
+
+    return 200, 'successfully ...', json_response
+
+
+def client_reserve_pending(token, laser_area_list):
+
+    """
+
+    create pending reserve for client
+
+    """
+
+    user, _ = core.get_user_from_token(token)
+
+    if user is None:
+
+        return 400, 'wrong token/username'
+
+    try:
+
+        _ = models.Reserve.objects.filter(reserve_type='pe').get(user=user)
+
+        return 400, 'you have pending time'
+
+    except:
+
+        reserve_obj = models.Reserve(
+
+            id=str(uuid.uuid4().int),
+            session_number=1,
+            reserve_type='pe',
+            total_payment_amount=0.0,
+            total_price_amount=0.0,
+            reserve_time_int=time.time(),
+            reserve_time_str=utils.time_int2str(time.time()),
+            user=user,
+
+        )
+
+    total_payment = 0.0
+    laser_area_name = ''
+    reserve_obj.save()
+
+    for laser in laser_area_list:
+
+        try:
+
+            laser_obj = laser_model.LaserAreaInformation.objects.get(id=laser)
+
+        except:
+
+            reserve_obj.delete()
+
+            return 400, 'wrong laser id'
+
+        total_payment += laser_obj.price
+        laser_area_name += laser_obj.laser.name + ' '
+        reserve_obj.laser_area_list.add(laser_obj)
+
+    reserve_obj.total_price_amount = total_payment
+    reserve_obj.laser_area_name = laser_area_name
+
+    reserve_obj.save()
+
+    return 200, 'successfully'
+
+
+def client_reserve_add_time(token, json_date):
+
+    """
+
+    add time to pending reserve
+
+    """
+    user, _ = core.get_user_from_token(token)
+
+    hour_dict = {
+
+        '8-10': 60*60*8,
+        '10-12': 60 * 60 * 10,
+        '12-14': 60 * 60 * 12,
+        '15-17': 60 * 60 * 15,
+        '17-19': 60 * 60 * 17,
+        '19-21': 60 * 60 * 19,
+        '21-23': 60 * 60 * 21,
+        '23-1': 60 * 60 * 23,
+        '1-3': 60 * 60 * 25,
+        '3-5': 60 * 60 * 27,
+
+    }
+
+    if user is None:
+
+        return 400, 'wrong token/username'
+
+    try:
+
+        reserve = models.Reserve.objects.filter(reserve_type='pe').get(user=user)
+        reserve_schedule = models.ReserveSchedule.objects.filter(date=json_date['date']).get(time_range=json_date['time_range'])
+
+        reserve_body_list = reserve.laser_area_list.all()
+        reserve_time = 0.0
+
+        for laser_body in reserve_body_list:
+
+            reserve_time += laser_body.operate_time
+
+        if 120 - reserve_schedule.total_reserve_time > reserve_time:
+
+            reserve_time_cal = utils.cvt_solar_date2ad_int(json_date['date']) + hour_dict[json_date['time_range']] + (reserve_schedule.total_reserve_time * 60)
+            reserve.reserve_time_int = reserve_time_cal
+            reserve.reserve_time_str = utils.time_int2str(reserve_time_cal)
+
+            reserve.save()
+
+            reserve_schedule.total_reserve_time += reserve_time
+            reserve_schedule.save()
+
+            return 200, 'successfully'
+
+        else:
+
+            return 400, "this time range are full"
+
+    except:
+
+        return 400, "wrong time range or user didn't have pending reserve"

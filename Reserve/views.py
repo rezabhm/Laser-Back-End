@@ -528,3 +528,183 @@ class ProveReserve(GenericAPIView):
                 'status': token_status_text,
 
             }, status=400)
+
+
+class TimeList(GenericAPIView):
+
+    """
+
+    نهایی سازی و تایید نوبت
+
+    """
+
+    serializer_class = swagger_schema.ReserveSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, reserve_id, *args, **kwargs):
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(request, access_user_type=['a'])
+
+        if token_status == 201:
+
+            status, status_text, json_response = reserve.time_list(reserve_id)
+
+            return JsonResponse({
+
+                'status_code': status,
+                'status': status_text,
+                'time_data': json_response
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class ClientPendingReserve(GenericAPIView):
+    """
+
+    رزرو اولیه نوبت توسط مشتری
+    """
+
+    serializer_class = swagger_schema.PendingReserveSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['laser_area_list']
+
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a', 'r', 'c']
+
+        )
+
+        if token_status == 201:
+
+            # check customer user
+            status_code, status_text = reserve.client_reserve_pending(
+
+                request.headers['Token'],
+                json_data['laser_area_list']
+
+            )
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status': status_text,
+
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class ClientAddTimeReserve(GenericAPIView):
+
+    """
+
+    تعیین زمان نوبت
+
+    """
+
+    serializer_class = swagger_schema.AddTimeReserveSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['date', 'time_range']
+
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a', 'r', 'c']
+
+        )
+
+        if token_status == 201:
+
+            # check customer user
+            status_code, status_text = reserve.client_reserve_add_time(
+
+                request.headers['Token'],
+                json_data,
+
+            )
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status': status_text,
+
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)

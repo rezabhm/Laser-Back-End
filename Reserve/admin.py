@@ -33,3 +33,19 @@ class PreReserveAdmin(admin.ModelAdmin):
     )
 
     list_filter = ["id", ]
+
+
+@admin.register(models.ReserveSchedule)
+class ReserveScheduleAdmin(admin.ModelAdmin):
+    list_display = ["id", 'date', 'date_type', "time_range", 'total_reserve_time']
+
+    fieldsets = (
+
+        ("Information", {"fields": ("id",)}),
+        ("Price", {"fields": ("total_reserve_time",)}),
+        ("Timing", {"fields": ("date", 'date_type', 'time_range',)}),
+        ("Foreign Key", {"fields": ("operator",)}),
+
+    )
+
+    list_filter = ["id", ]
