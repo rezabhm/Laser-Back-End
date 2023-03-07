@@ -616,7 +616,7 @@ class ClientPendingReserve(GenericAPIView):
         if token_status == 201:
 
             # check customer user
-            status_code, status_text = reserve.client_reserve_pending(
+            status_code, status_text, reserve_id = reserve.client_reserve_pending(
 
                 request.headers['Token'],
                 json_data['laser_area_list']
@@ -627,6 +627,7 @@ class ClientPendingReserve(GenericAPIView):
 
                 'status_code': status_code,
                 'status': status_text,
+                'reserve': reserve_id,
 
 
             }, status=201)

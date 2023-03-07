@@ -418,13 +418,13 @@ def client_reserve_pending(token, laser_area_list):
 
     if user is None:
 
-        return 400, 'wrong token/username'
+        return 400, 'wrong token/username', None
 
     try:
 
         _ = models.Reserve.objects.filter(reserve_type='pe').get(user=user)
 
-        return 400, 'you have pending time'
+        return 400, 'you have pending time', None
 
     except:
 
@@ -455,7 +455,7 @@ def client_reserve_pending(token, laser_area_list):
 
             reserve_obj.delete()
 
-            return 400, 'wrong laser id'
+            return 400, 'wrong laser id', None
 
         total_payment += laser_obj.price
         laser_area_name += laser_obj.laser.name + ' '
@@ -466,7 +466,7 @@ def client_reserve_pending(token, laser_area_list):
 
     reserve_obj.save()
 
-    return 200, 'successfully'
+    return 200, 'successfully', reserve_obj.id
 
 
 def client_reserve_add_time(token, json_date):
