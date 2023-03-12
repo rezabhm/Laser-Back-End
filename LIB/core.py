@@ -701,8 +701,15 @@ def customer_add_inf(json_data, token):
         # save
         user.save()
 
-        # create customer object
-        customer = models.Customer()
+        try:
+
+            # create customer object
+            customer = models.Customer.objects.get(user=user)
+
+        except:
+
+            customer = models.Customer()
+            customer.user = user
 
         # set parameter
         customer.national_code = json_data['national_code']
@@ -711,7 +718,6 @@ def customer_add_inf(json_data, token):
         customer.drug_hist = json_data['drug_hist']
         customer.decease_hist = json_data['decease_hist']
         customer.doctor = json_data['doctor']
-        customer.user = user
 
         # save
         customer.save()

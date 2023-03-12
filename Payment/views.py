@@ -249,7 +249,7 @@ class MultiplePayment(GenericAPIView):
 
     """
 
-    serializer_class = swagger_schema.OffCodeAddReserveSerializer
+    serializer_class = swagger_schema.MultiplePayment
     permission_classes = (AllowAny,)
     allowed_methods = ('POST',)
 

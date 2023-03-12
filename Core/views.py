@@ -1041,16 +1041,30 @@ class CustomerLogin(GenericAPIView):
 
     serializer_class = swagger_schema.TokenPhoneNumberSerializer
     permission_classes = (AllowAny,)
-    allowed_methods = ('GET',)
+    allowed_methods = ('POST',)
 
     #
     # def get(self, request, *args, **kwargs):
     #
     #     return authentication.get_error_response()
 
-    def get(self, request, phone_number, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
 
-        status_code, status_text = core.customer_login(phone_number)
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['phone_number']
+
+        )
+
+        if status:
+            return response
+
+        status_code, status_text = core.customer_login(json_data['phone_number'])
 
         return JsonResponse({
 

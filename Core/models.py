@@ -152,7 +152,7 @@ class Comment(models.Model):
     create_time_str = models.CharField(default='-', max_length=25)
 
     # foreign key
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.comment_text

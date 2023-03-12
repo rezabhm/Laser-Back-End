@@ -19,7 +19,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Core/'
 
-r = requests.post(src + 'add/customer/information/', json=json_request, headers={'Token': '23'})
+r = requests.post(src + 'add/customer/information/', json=json_request, headers={'Token': '1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

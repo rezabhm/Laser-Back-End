@@ -18,10 +18,9 @@ def operator():
 
     time_type = 'm' if float(current_time_str_type) > 15 else 'a'
 
-    # get current operator program
-    opp_obj = models.OperatorProgram.objects.get(id=current_time_str_pe + time_type)
-
     try:
+        # get current operator program
+        opp_obj = models.OperatorProgram.objects.get(id=current_time_str_pe + time_type)
 
         return 200, 'successfully', {
 

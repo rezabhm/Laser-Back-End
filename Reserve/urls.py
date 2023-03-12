@@ -13,7 +13,7 @@ urlpatterns = [
     re_path(r'^edit/reserve/laser/area/$', EditReserveLaserArea.as_view(), name='EditReserveLaserArea'),
     re_path(r'^reception/add/reserve/$', ReceptionAddReserve.as_view(), name='ReceptionAddReserve'),
     re_path(r'^prove/reserve/$', ProveReserve.as_view(), name='ProveReserve'),
-    re_path(r'^time/list/(?P<reserve_id>[\w]+)/$', TimeList.as_view(), name='TimeList'),
+    re_path(r'^time/list/$', TimeList.as_view(), name='TimeList'),
     re_path(r'^client/pending/reserve/$', ClientPendingReserve.as_view(), name='ClientPendingReserve'),
     re_path(r'^client/add/time/$', ClientAddTimeReserve.as_view(), name='ClientAddTimeReserve'),
 

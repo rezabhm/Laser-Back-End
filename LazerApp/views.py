@@ -224,7 +224,7 @@ class DeleteLaserArea(GenericAPIView):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
-
+            request,
             access_user_type=['a']
 
         )

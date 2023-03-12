@@ -4,11 +4,17 @@ import json
 
 src = 'http://127.0.0.1:8000/Reserve/'
 
+json_data={
+
+    'reserve':'189501324783785921486111599560986776109'
+
+}
+
 reserve_id = '189501324783785921486111599560986776109'
 
-r = requests.get(src + f'time/list/{reserve_id}/', headers={
+r = requests.post(src + f'time/list/', json= json_data, headers={
 
-    'Authentication':'Barer 1'
+    'Token': '1'
 
 })
 
