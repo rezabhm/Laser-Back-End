@@ -112,7 +112,7 @@ class AddNewLaserArea(GenericAPIView):
                 'status_code': status_code,
                 'status': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -178,7 +178,7 @@ class EditLaserArea(GenericAPIView):
                 'status_code': status_code,
                 'status': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -243,7 +243,7 @@ class DeleteLaserArea(GenericAPIView):
                 'status_code': status_code,
                 'status': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 

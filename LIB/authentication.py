@@ -74,7 +74,12 @@ def check_request_json(req_json, param_list):
 
             return True, JsonResponse(
 
-                        {'status_code': 400, 'result': "invalid input parameter", 'parameter': param_list},
+                        {
+                            'status_code': 400, 'result': "invalid input parameter",
+                            'parameter': f"you didn't add <{key}> parameter ",
+                            'parameter_list': param_list
+
+            },
                         status=400
 
                     )

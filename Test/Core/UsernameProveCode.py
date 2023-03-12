@@ -2,15 +2,18 @@ import requests
 import json
 
 
-src = 'http://127.0.0.1:8000/Reserve/'
+json_request = {
 
-reserve_id = '189501324783785921486111599560986776109'
+    'code': '200333',
+    'phone_number': 'reza',
 
-r = requests.get(src + f'time/list/{reserve_id}/', headers={
 
-    'Authentication':'Barer 1'
+}
 
-})
+
+src = 'http://127.0.0.1:8000/Core/'
+
+r = requests.post(src + 'login/prove/code/', json=json_request,)
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

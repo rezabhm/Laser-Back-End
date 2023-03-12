@@ -48,6 +48,8 @@ class SignUpCustomer(GenericAPIView):
         if status:
             return response
 
+        json_data['username'] = json_data['username'].lower()
+
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
 
@@ -122,6 +124,7 @@ class SignUpAdmin(GenericAPIView):
 
         if status:
             return response
+        json_data['username'] = json_data['username'].lower()
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -203,6 +206,8 @@ class Login(GenericAPIView):
         if status:
             return response
 
+        json_data['username'] = json_data['username'].lower()
+
         # check customer user
         status, status_txt, token, user_type = core.login(
 
@@ -218,7 +223,7 @@ class Login(GenericAPIView):
             'token': token,
             'user_type': user_type
 
-        }, status=201)
+        }, status=int(status))
 
 
 class LogOut(GenericAPIView):
@@ -300,6 +305,8 @@ class ForgotPassword(GenericAPIView):
         if status:
             return response
 
+        json_data['username'] = json_data['username'].lower()
+
         # check customer user
         status, status_txt = core.forgot_password(
 
@@ -312,7 +319,7 @@ class ForgotPassword(GenericAPIView):
             'status_code': status,
             'status_text': status_txt,
 
-        }, status=201)
+        }, status=int(status))
 
 
 class ProveForgotPassword(GenericAPIView):
@@ -346,6 +353,7 @@ class ProveForgotPassword(GenericAPIView):
 
         if status:
             return response
+        json_data['username'] = json_data['username'].lower()
 
         # check customer user
         status, status_txt = core.prove_forgot_password(
@@ -360,7 +368,7 @@ class ProveForgotPassword(GenericAPIView):
             'status_code': status,
             'status_text': status_txt,
 
-        }, status=201)
+        }, status=int(status))
 
 
 class ChangePassword(GenericAPIView):
@@ -394,6 +402,7 @@ class ChangePassword(GenericAPIView):
 
         if status:
             return response
+        json_data['username'] = json_data['username'].lower()
 
         # check customer user
         status, status_txt = core.change_password(
@@ -409,7 +418,7 @@ class ChangePassword(GenericAPIView):
             'status_code': status,
             'status_text': status_txt,
 
-        }, status=201)
+        }, status=int(status))
 
 
 class UserList(GenericAPIView):
@@ -673,6 +682,7 @@ class CustomerAdd2Charge(GenericAPIView):
 
         if status:
             return response
+        json_data['username'] = json_data['username'].lower()
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -692,7 +702,7 @@ class CustomerAdd2Charge(GenericAPIView):
                 'status_code': status_code,
                 'status_text': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -735,6 +745,7 @@ class DeleteUser(GenericAPIView):
 
         if status:
             return response
+        json_data['username'] = json_data['username'].lower()
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -754,7 +765,7 @@ class DeleteUser(GenericAPIView):
                 'status_code': status_code,
                 'status_text': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -797,6 +808,7 @@ class CustomerInf(GenericAPIView):
 
         if status:
             return response
+        json_data['username'] = json_data['username'].lower()
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -818,7 +830,7 @@ class CustomerInf(GenericAPIView):
                 'customer': customer,
                 'customer_information': customer_inf,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -861,6 +873,7 @@ class ChangeUserInformation(GenericAPIView):
 
         if status:
             return response
+        json_data['username'] = json_data['username'].lower()
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -881,7 +894,7 @@ class ChangeUserInformation(GenericAPIView):
                 'status_text': status_text,
 
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -924,6 +937,7 @@ class EnterExitOperator(GenericAPIView):
 
         if status:
             return response
+        json_data['username'] = json_data['username'].lower()
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -943,7 +957,7 @@ class EnterExitOperator(GenericAPIView):
                 'status_text': status_text,
 
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -1005,7 +1019,7 @@ class AddComment(GenericAPIView):
                 'status_text': status_text,
 
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -1025,7 +1039,7 @@ class CustomerLogin(GenericAPIView):
 
     """
 
-    serializer_class = swagger_schema.TokenUsernameSerializer
+    serializer_class = swagger_schema.TokenPhoneNumberSerializer
     permission_classes = (AllowAny,)
     allowed_methods = ('GET',)
 
@@ -1034,9 +1048,9 @@ class CustomerLogin(GenericAPIView):
     #
     #     return authentication.get_error_response()
 
-    def get(self, request, username, *args, **kwargs):
+    def get(self, request, phone_number, *args, **kwargs):
 
-        status_code, status_text = core.customer_login(username)
+        status_code, status_text = core.customer_login(phone_number)
 
         return JsonResponse({
 
@@ -1044,7 +1058,7 @@ class CustomerLogin(GenericAPIView):
             'status_text': status_text,
 
 
-        }, status=201)
+        }, status=int(status_code))
 
 
 class CustomerLoginProveCode(GenericAPIView):
@@ -1054,7 +1068,7 @@ class CustomerLoginProveCode(GenericAPIView):
 
     """
 
-    serializer_class = swagger_schema.ProveForgotPassSerializer
+    serializer_class = swagger_schema.CustomerProveForgotPassSerializer
     permission_classes = (AllowAny,)
     allowed_methods = ('POST',)
 
@@ -1072,7 +1086,7 @@ class CustomerLoginProveCode(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['username', 'code']
+            ['phone_number', 'code']
 
         )
 
@@ -1080,33 +1094,25 @@ class CustomerLoginProveCode(GenericAPIView):
             return response
 
         # check token is valid or not
-        token_status, token_status_text = authentication.check_token(
+        # token_status, token_status_text = authentication.check_token(
+        #
+        #     request,
+        #     access_user_type=['r', 'a', 'c']
+        #
+        # )
 
-            request,
-            access_user_type=['r', 'a', 'c']
+        if True:
 
-        )
-
-        if token_status == 201:
-
-            status_code, status_text = core.customer_login_prove_code(json_data)
+            status_code, status_text, token_code = core.customer_login_prove_code(json_data)
 
             return JsonResponse({
 
                 'status_code': status_code,
                 'status_text': status_text,
+                'token': token_code,
 
 
-            }, status=201)
-
-        else:
-
-            return JsonResponse({
-
-                'status_code': token_status,
-                'status': token_status_text,
-
-            }, status=400)
+            }, status=int(status_code))
 
 
 class AddCustomerInf(GenericAPIView):
@@ -1159,7 +1165,7 @@ class AddCustomerInf(GenericAPIView):
                 'status_code': status_code,
                 'status_text': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 

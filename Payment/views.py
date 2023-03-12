@@ -108,7 +108,7 @@ class OffCodeDelete(GenericAPIView):
                 'status_code': status_code,
                 'status': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -169,7 +169,7 @@ class OffCodeCreate(GenericAPIView):
                 'status_code': status_code,
                 'status': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -230,7 +230,7 @@ class OffCodeAddReserve(GenericAPIView):
                 'status_code': status_code,
                 'status': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -291,7 +291,7 @@ class MultiplePayment(GenericAPIView):
                 'status_code': status_code,
                 'status': status_text,
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 

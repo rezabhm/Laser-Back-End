@@ -54,6 +54,12 @@ class ProveForgotPassSerializer(serializers.Serializer):
     code = serializers.CharField()
 
 
+class CustomerProveForgotPassSerializer(serializers.Serializer):
+
+    phone_number = serializers.CharField()
+    code = serializers.CharField()
+
+
 class ChangePasswordSerializer(serializers.Serializer):
 
     username = serializers.CharField()
@@ -65,6 +71,10 @@ class TokenUsernameSerializer(serializers.Serializer):
 
     username = serializers.CharField()
 
+
+class TokenPhoneNumberSerializer(serializers.Serializer):
+
+    phone_number = serializers.CharField()
 
 class AddCommentSerializer(serializers.Serializer):
 

@@ -562,7 +562,7 @@ class TimeList(GenericAPIView):
                 'status': status_text,
                 'time_data': json_response
 
-            }, status=201)
+            }, status=int(status))
 
         else:
 
@@ -630,7 +630,7 @@ class ClientPendingReserve(GenericAPIView):
                 'reserve': reserve_id,
 
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 
@@ -699,7 +699,7 @@ class ClientAddTimeReserve(GenericAPIView):
                 'status': status_text,
 
 
-            }, status=201)
+            }, status=int(status_code))
 
         else:
 

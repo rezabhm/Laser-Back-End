@@ -578,45 +578,8 @@ def add_comment(comment_text, token):
     return 200, 'successfully create'
 
 
-def customer_login(json_data):
+def customer_login(username):
 
-    """
-
-    login customer
-
-    """
-
-    try:
-
-        # get user
-        user = models.User.objects.get(username=json_data['username'])
-
-        # get login code
-        login_code = models.ForgotPassword.objects.filter(expire_time__gte=time.time()).get(user=user)
-
-        if json_data['code'] == login_code.code_generate:
-
-            # update parameter
-            login_code.proved = True
-            login_code.used = True
-
-            # save
-            login_code.save()
-
-            return 201, 'proved ...'
-
-        else:
-
-            return 400, 'wrong code'
-
-
-
-    except:
-
-        return 400, 'wrong username'
-
-
-def customer_login_prove_code(json_data):
     """
 
     login customer
@@ -642,21 +605,28 @@ def customer_login_prove_code(json_data):
 
     except:
 
-        # create user
-        user = models.User(
+        user_list = models.User.objects.filter(username=username)
 
-            username=username,
-            user_type='c'
+        if len(user_list) > 0:
 
-        )
+            user = user_list[0]
 
-        # save
-        user.save()
+        else:
+            # create user
+            user = models.User(
+
+                username=username,
+                user_type='c'
+
+            )
+
+            # save
+            user.save()
 
         # create prove code
         login_code = models.ForgotPassword(
 
-            id=str(uuid4().int),
+            code=str(uuid4().int),
             code_generate=f'{random.randint(99999, 999999)}',
             expire_time=time.time() + (60 * 10),
             user=user
@@ -669,6 +639,46 @@ def customer_login_prove_code(json_data):
     return 201, 'successfully ...'
 
 
+def customer_login_prove_code(json_data):
+    """
+
+    login customer
+
+    """
+
+    try:
+
+        # get user
+        user = models.User.objects.get(username=json_data['phone_number'])
+
+        # get login code
+        login_code = models.ForgotPassword.objects.filter(expire_time__gte=time.time()).get(user=user)
+
+        if json_data['code'] == login_code.code_generate:
+
+            # update parameter
+            login_code.proved = True
+            login_code.used = True
+
+            token = create_token(user)
+            print(token)
+
+            # save
+            login_code.save()
+
+            return 201, 'proved ...', token
+
+        else:
+
+            return 400, 'wrong code', None
+
+
+
+    except:
+
+        return 400, 'wrong code/expired time', None
+
+
 def customer_add_inf(json_data, token):
 
     """
@@ -677,10 +687,9 @@ def customer_add_inf(json_data, token):
 
     """
 
-    # check customer user
-    status = check_username(json_data['username'], user_type='c', national_code=json_data['national_code'])
+    user, _ = get_user_from_token(token)
 
-    if status:
+    if user:
 
         user, _ = get_user_from_token(token)
 

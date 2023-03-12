@@ -126,7 +126,7 @@ class ChangeSetting(GenericAPIView):
                 'status_code': 200,
                 'status': 'successfully',
 
-            }, status=201)
+            }, status=200)
 
         else:
 

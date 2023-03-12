@@ -55,7 +55,7 @@ class OperatorProgramList(GenericAPIView):
                 'serializer_status': status,
                 'operator_program': operator_list_serializer.data,
 
-            }, status=201)
+            }, status=int(token_status))
 
         else:
 
