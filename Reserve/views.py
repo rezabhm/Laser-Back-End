@@ -540,35 +540,21 @@ class TimeList(GenericAPIView):
 
     serializer_class = swagger_schema.ReserveSerializer
     permission_classes = (AllowAny,)
-    allowed_methods = ('POST',)
+    allowed_methods = ('GET',)
 
     #
     # def get(self, request, *args, **kwargs):
     #
     #     return authentication.get_error_response()
 
-    def post(self, request, *args, **kwargs):
-
-        # decode json
-        json_data = utils.decode_reqeust_json(request)
-
-        # check input json param
-        status, response = authentication.check_request_json(
-
-            json_data,
-            ['reserve']
-
-        )
-
-        if status:
-            return response
+    def get(self, request, reserve_id, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(request, access_user_type=['a'])
 
         if token_status == 201:
 
-            status, status_text, json_response = reserve.time_list(json_data['reserve'])
+            status, status_text, json_response = reserve.time_list(reserve_id)
 
             return JsonResponse({
 

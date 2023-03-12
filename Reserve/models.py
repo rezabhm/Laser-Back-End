@@ -77,7 +77,7 @@ class ReserveSchedule(models.Model):
     """
 
     # information
-    id = models.CharField(max_length=128, primary_key=True)
+    id = models.CharField(max_length=150, primary_key=True)
 
     # time information
     date = models.CharField(max_length=10)
