@@ -71,7 +71,7 @@ class CustomerAdmin(admin.ModelAdmin):
     fieldsets = (
 
         ("Information", {"fields": ("national_code", 'address', 'house_number')}),
-        ("Medical History", {"fields": ("drug_hist", 'decease_hist', 'doctor', 'charge')}),
+        ("Medical History", {"fields": ("drug_hist", 'decease_hist', 'doctor', 'charge', 'offline_num')}),
         ("Foreign Key", {"fields": ("user",)}),
 
     )

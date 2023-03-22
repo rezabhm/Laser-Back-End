@@ -23,6 +23,13 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
 
+class EmployeeEnterExitSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.EmployeeEnterExit
+        fields = '__all__'
+
+
 class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:

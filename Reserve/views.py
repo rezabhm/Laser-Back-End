@@ -136,6 +136,7 @@ class UserReserveList(GenericAPIView):
                 'status_code': 200,
                 'status': 'successfully',
                 'reserve_list': response_data,
+                'last_reserve': response_data[-1] if len(response_data) > 0 else None,
 
             }, status=201)
 
@@ -202,8 +203,8 @@ class ReserveInformation(GenericAPIView):
 
                 'status_code': status_code,
                 'status': status_text,
-                'reserve': reserve_data,
-
+                'reserve': reserve_data[0],
+                'payment_list': reserve_data[1],
 
             }, status=201)
 
@@ -242,7 +243,7 @@ class CancelReserve(GenericAPIView):
         status, response = authentication.check_request_json(
 
             json_data,
-            ['reserve', 'cancel_type']
+            ['reserve', 'cancel_type', 'sms_status']
 
         )
 
@@ -700,6 +701,70 @@ class ClientAddTimeReserve(GenericAPIView):
 
 
             }, status=int(status_code))
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class CancelTimeRange(GenericAPIView):
+
+    """
+
+    کنسل کردن بازه های زمانی
+
+    """
+
+    serializer_class = swagger_schema.CancelTimaeRangeReserveSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['date', 'time_range_list']
+
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a']
+
+        )
+
+        if token_status == 201:
+
+            # check customer user
+            response_data = reserve.cancel_time_range(json_data)
+
+            return JsonResponse({
+
+                'status_code': 200,
+                'status': 'successfully',
+                'response_status': response_data,
+
+            }, status=200)
 
         else:
 

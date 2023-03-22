@@ -8,3 +8,11 @@ class OffCodeSerializer(serializers.ModelSerializer):
 
         model = models.OffCode
         fields = '__all__'
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = models.Payment
+        fields = '__all__'

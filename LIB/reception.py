@@ -1,6 +1,7 @@
 import time
 
 from Admin import models
+from Core import models as core_model
 from . import utils
 
 
@@ -17,6 +18,7 @@ def operator():
     current_time_str_type = current_time_str[-2].split(':')[0]
 
     time_type = 'm' if float(current_time_str_type) > 15 else 'a'
+    reception = core_model.EmployeeEnterExit.obejcts.filter(exited=False).filter(user__user_type='r')
 
     try:
         # get current operator program
@@ -26,6 +28,8 @@ def operator():
 
             'username': opp_obj.operator.username,
             'name': f'{opp_obj.operator.name} {opp_obj.operator.last_name}',
+            'reception_username': reception[-1].user.username if len(reception) > 0 else "UnKnown",
+            'reception_name': f'{reception[-1].user.name} {reception[-1].user.last_name}' if len(reception) > 0 else "UnKnown",
 
         }
 
@@ -35,5 +39,8 @@ def operator():
 
             'username': 'UnKnown',
             'name': 'UnKnown',
+            'reception_username': reception[-1].user.username if len(reception) > 0 else "UnKnown",
+            'reception_name': f'{reception[-1].user.name} {reception[-1].user.last_name}' if len(
+                reception) > 0 else "UnKnown",
 
         }

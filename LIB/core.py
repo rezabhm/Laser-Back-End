@@ -10,7 +10,6 @@ from uuid import uuid4
 
 
 def check_username(username, user_type='c', national_code='0'):
-
     """
 
     check username exist or not
@@ -47,7 +46,6 @@ def check_username(username, user_type='c', national_code='0'):
 
 
 def create_user(data):
-
     """
     create user
     """
@@ -67,7 +65,6 @@ def create_user(data):
     user.save()
 
     if data['user_type'] == 'c':
-
         # create customer object
         customer = models.Customer()
 
@@ -78,6 +75,7 @@ def create_user(data):
         customer.drug_hist = data['drug_hist']
         customer.decease_hist = data['decease_hist']
         customer.doctor = data['doctor']
+        customer.offline_num = data['offline_number']
         customer.user = user
 
         # save
@@ -85,7 +83,6 @@ def create_user(data):
 
 
 def create_token(user):
-
     """
 
     create token
@@ -107,8 +104,8 @@ def create_token(user):
         token.token_code = uuid4().hex
         token.token_create_time_int = time.time()
         token.token_create_time_str = utils.time_int2str(time.time())
-        token.token_expire_time_int = time.time() + (time.time() * 60*60*24*30)
-        token.token_expire_time_str = time.time() + (time.time() * 60*60*24*30)
+        token.token_expire_time_int = time.time() + (time.time() * 60 * 60 * 24 * 30)
+        token.token_expire_time_str = time.time() + (time.time() * 60 * 60 * 24 * 30)
 
         # save
         token.save()
@@ -117,7 +114,6 @@ def create_token(user):
 
 
 def login(username, password):
-
     """
 
     login user
@@ -148,7 +144,6 @@ def login(username, password):
 
 
 def user_enter_time(user):
-
     """
 
     store user's enter time
@@ -156,7 +151,6 @@ def user_enter_time(user):
     """
 
     if user.user_type in ['r', 'o']:
-
         # create enter model
         enter_ob = models.EmployeeEnterExit()
 
@@ -197,7 +191,6 @@ def user_exit_time(user):
 
 
 def logout(token):
-
     """
 
     store user's exit time
@@ -212,7 +205,6 @@ def logout(token):
 
 
 def get_user_from_token(token):
-
     """
 
     get_user_from_token
@@ -230,7 +222,6 @@ def get_user_from_token(token):
 
 
 def forgot_password(username):
-
     """
 
     create forgot password code
@@ -251,8 +242,8 @@ def forgot_password(username):
             fg_obj = models.ForgotPassword.objects.get(user=user)
 
             # update param
-            fg_obj.code_generate = f'{random.randint(99999,999999)}'
-            fg_obj.expire_time = time.time() + 60*10
+            fg_obj.code_generate = f'{random.randint(99999, 999999)}'
+            fg_obj.expire_time = time.time() + 60 * 10
             fg_obj.proved = False
             fg_obj.used = False
 
@@ -265,9 +256,9 @@ def forgot_password(username):
             fg_obj = models.ForgotPassword()
 
             # set param
-            fg_obj.code = f'{random.randint(99999,999999)}'
-            fg_obj.code_generate = f'{random.randint(99999,999999)}'
-            fg_obj.expire_time = time.time() + 60*10
+            fg_obj.code = f'{random.randint(99999, 999999)}'
+            fg_obj.code_generate = f'{random.randint(99999, 999999)}'
+            fg_obj.expire_time = time.time() + 60 * 10
             fg_obj.user = user
 
             # save
@@ -284,7 +275,6 @@ def forgot_password(username):
 
 
 def prove_forgot_password(username, code):
-
     """
 
     check forgot password's code is valid or not
@@ -322,7 +312,6 @@ def prove_forgot_password(username, code):
 
 
 def change_password(username, password, code):
-
     """
 
     check forgot password's code is valid or not
@@ -367,8 +356,35 @@ def change_password(username, password, code):
         return 400, 'wrong username'
 
 
-def customer_add_to_charge(username):
+def token_change_password(json_data):
+    """
 
+    check forgot password's code is valid or not
+
+    """
+
+    # check username
+    user, _ = get_user_from_token(json_data['Authentication'].split(' ')[-1])
+
+    if user:
+
+        if user.password == authentication.password_hash(json_data['old_password']):
+
+            user.password = authentication.password_hash(json_data['password'])
+            user.password()
+
+            return 200, 'successfully changed'
+
+        else:
+
+            return 400, 'wrong old password'
+
+    else:
+
+        return 400, 'wrong token'
+
+
+def customer_add_to_charge(username):
     """
 
     add customer to charge
@@ -394,7 +410,6 @@ def customer_add_to_charge(username):
 
 
 def delete_user(username):
-
     """
 
     add customer to charge
@@ -407,7 +422,6 @@ def delete_user(username):
         user = models.User.objects.get(username=username)
 
         if user.user_type == 'c':
-
             # get user
             customer = models.Customer.objects.get(user__username=username)
 
@@ -425,7 +439,6 @@ def delete_user(username):
 
 
 def customer_information(username):
-
     """
 
     add customer to charge
@@ -450,7 +463,6 @@ def customer_information(username):
 
 
 def change_user_information(json_data, request):
-
     """
 
     change user's information
@@ -466,18 +478,19 @@ def change_user_information(json_data, request):
         if json_data['username'] == token.user.username or token.user.user_type == 'a':
 
             # update param
-            user.phone_number = json_data['phone_number'] if len(str(json_data['phone_number'])) > 0 else user.phone_number
+            user.phone_number = json_data['phone_number'] if len(
+                str(json_data['phone_number'])) > 0 else user.phone_number
             user.name = json_data['name'] if len(str(json_data['name'])) > 0 else user.name
             user.last_name = json_data['last_name'] if len(str(json_data['last_name'])) > 0 else user.last_name
-            user.user_type = json_data['user_type'] if len(str(json_data['user_type'])) > 0 and json_data['user_type'] != 'a' else user.user_type
+            user.user_type = json_data['user_type'] if len(str(json_data['user_type'])) > 0 and json_data[
+                'user_type'] != 'a' else user.user_type
 
             # save
             user.save()
 
             if token.user.user_type == 'c':
-
                 # customer
-                customer = models.Customer.objects.get(user__username= json_data['username'])
+                customer = models.Customer.objects.get(user__username=json_data['username'])
 
                 # set parameter
                 customer.doctor = json_data['doctor']
@@ -485,6 +498,7 @@ def change_user_information(json_data, request):
                 customer.house_number = json_data['house_number']
                 customer.drug_hist = json_data['drug_hist']
                 customer.decease_hist = json_data['decease_hist']
+                customer.offline_num = json_data['offline_number']
 
                 # save
                 customer.save()
@@ -501,7 +515,6 @@ def change_user_information(json_data, request):
 
 
 def enter_exit_operator(username):
-
     """
 
     record operator's enter/exit time
@@ -551,7 +564,6 @@ def enter_exit_operator(username):
 
 
 def add_comment(comment_text, token):
-
     """
 
     create new comment
@@ -579,7 +591,6 @@ def add_comment(comment_text, token):
 
 
 def customer_login(username):
-
     """
 
     login customer
@@ -680,7 +691,6 @@ def customer_login_prove_code(json_data):
 
 
 def customer_add_inf(json_data, token):
-
     """
 
     add customer information for signup
@@ -718,6 +728,7 @@ def customer_add_inf(json_data, token):
         customer.drug_hist = json_data['drug_hist']
         customer.decease_hist = json_data['decease_hist']
         customer.doctor = json_data['doctor']
+        customer.offline_num = json_data['offline_number']
 
         # save
         customer.save()
@@ -727,3 +738,58 @@ def customer_add_inf(json_data, token):
     else:
 
         return 400, 'wrong token'
+
+
+def work_time_list(json_data):
+    """
+
+    employer work time
+
+    """
+
+    from_time = json_data['from_']
+    from_time = utils.cvt_solar_date2ad_int(from_time)
+
+    to_time = json_data['to']
+    to_time = utils.cvt_solar_date2ad_int(to_time)
+
+    employer_time = models.EmployeeEnterExit.objects.filter(exited=True).filter(enter_time_int__gte=from_time).filter(
+        enter_time_int__lte=to_time)
+
+    final_data = {}
+
+    for data in employer_time:
+        if data.user.username not in final_data.keys():
+            final_data[data.user.username] = {
+
+                'morning_time': 0.0,
+                'afternoon_time': 0.0,
+
+            }
+
+        data_hour = int(data.enter_time_str.split(' ')[-1].split(':')[0])
+        if (data_hour < 14) and (data_hour > 8):
+
+            # add with morning time
+            final_data[data.user.username]['morning_time'] += (data.exit_time_int - data.enter_time_str)
+
+        else:
+
+            # add with afternoon time
+            final_data[data.user.username]['afternoon_time'] += (data.exit_time_int - data.enter_time_str)
+
+    return final_data
+
+
+def work_time(username):
+    """
+
+    employer work time
+
+    """
+
+    employer_time = models.EmployeeEnterExit.objects.filter(exited=True).filter(user__username=username)
+    final_data = serializer.EmployeeEnterExitSerializer(data=employer_time, many=True)
+    final_data.is_valid()
+
+    return final_data.data

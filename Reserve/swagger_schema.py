@@ -21,12 +21,18 @@ class CancelReserveSerializer(serializers.Serializer):
 
     reserve = serializers.CharField()
     cancel_type = serializers.CharField()
+    sms_status = serializers.BooleanField()
 
 
 class ReserveSerializer(serializers.Serializer):
 
     reserve = serializers.CharField()
 
+
+class CancelTimaeRangeReserveSerializer(serializers.Serializer):
+
+    date = serializers.CharField()
+    time_range_list = serializers.ListField()
 
 class AddTimeReserveSerializer(serializers.Serializer):
 

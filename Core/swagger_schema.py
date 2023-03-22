@@ -22,6 +22,7 @@ class SignUpSerializer(serializers.Serializer):
     drug_hist = serializers.BooleanField()
     decease_hist = serializers.BooleanField()
     doctor = serializers.CharField()
+    offline_number = serializers.IntegerField()
 
 
 class AddCustomerInfSerializer(serializers.Serializer):
@@ -35,6 +36,7 @@ class AddCustomerInfSerializer(serializers.Serializer):
     drug_hist = serializers.BooleanField()
     decease_hist = serializers.BooleanField()
     doctor = serializers.CharField()
+    offline_number = serializers.IntegerField()
 
 
 class LoginSerializer(serializers.Serializer):
@@ -46,6 +48,11 @@ class LoginSerializer(serializers.Serializer):
 class UsernameOnlySerializer(serializers.Serializer):
 
     username = serializers.CharField()
+
+
+class CommentListSerializer(serializers.Serializer):
+
+    seen_status = serializers.CharField()
 
 
 class ProveForgotPassSerializer(serializers.Serializer):
@@ -67,6 +74,12 @@ class ChangePasswordSerializer(serializers.Serializer):
     password = serializers.CharField()
 
 
+class TokenChangePasswordSerializer(serializers.Serializer):
+
+    password = serializers.CharField()
+    old_password = serializers.CharField()
+
+
 class TokenUsernameSerializer(serializers.Serializer):
 
     username = serializers.CharField()
@@ -84,3 +97,9 @@ class AddCommentSerializer(serializers.Serializer):
 class TokenOnlySerializer(serializers.Serializer):
 
     pass
+
+
+class WorkTimeSerializer(serializers.Serializer):
+
+    from_ = serializers.CharField()
+    to = serializers.CharField()

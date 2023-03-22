@@ -14,7 +14,7 @@ class ReserveAdmin(admin.ModelAdmin):
         ("Status", {"fields": ("online_reserve", 'charge', 'payed', 'used_off_code')}),
         ("Price", {"fields": ("total_price_amount", 'total_payment_amount')}),
         ("Timing", {"fields": ("reserve_time_int", 'reserve_time_str', 'request_time_int', 'request_time_str')}),
-        ("Foreign Key", {"fields": ("user", 'laser_area', 'laser_area_list', 'laser_area_name', 'off_code')}),
+        ("Foreign Key", {"fields": ("user", 'laser_area', 'laser_area_list', 'laser_area_name', 'off_code', 'time_range')}),
 
     )
 

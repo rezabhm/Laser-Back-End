@@ -126,6 +126,7 @@ class Customer(models.Model):
     decease_hist = models.BooleanField(default=False)
     doctor = models.CharField(max_length=50)
     charge = models.BooleanField(default=False)
+    offline_num = models.IntegerField(default=0)
 
     # foreign key
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default='')

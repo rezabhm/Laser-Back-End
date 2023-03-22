@@ -15,7 +15,7 @@ def check_token(requests, access_user_type=[]):
 
     try:
 
-        token = requests.headers['Token']
+        token = requests.headers['Authorization'].split(' ')[-1]
 
         # get token from DB
         token_list = core_model.Token.objects.filter(token_code=token)

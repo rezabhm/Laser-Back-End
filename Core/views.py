@@ -1,4 +1,6 @@
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
@@ -41,7 +43,7 @@ class SignUpCustomer(GenericAPIView):
 
             json_data,
             ['username', 'name', 'last_name', 'password', 'phone_number', 'national_code', 'address',
-             'house_number', 'drug_hist', 'decease_hist', 'doctor']
+             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'offline_number']
 
         )
 
@@ -421,6 +423,49 @@ class ChangePassword(GenericAPIView):
         }, status=int(status))
 
 
+class TokenChangePassword(GenericAPIView):
+    """
+
+    تغییر رمز عبور از روی توکن
+
+    """
+
+    serializer_class = swagger_schema.TokenChangePasswordSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['old_password', 'password']
+
+        )
+
+        if status:
+            return response
+
+        # check customer user
+        status, status_txt = core.token_change_password(json_data)
+
+        return JsonResponse({
+
+            'status_code': status,
+            'status_text': status_txt,
+
+        }, status=int(status))
+
+
 class UserList(GenericAPIView):
     """
 
@@ -592,7 +637,7 @@ class CommentList(GenericAPIView):
 
     """
 
-    serializer_class = swagger_schema.TokenOnlySerializer
+    serializer_class = swagger_schema.CommentListSerializer
     permission_classes = (AllowAny,)
     allowed_methods = ('GET',)
 
@@ -600,8 +645,8 @@ class CommentList(GenericAPIView):
     # def get(self, request, *args, **kwargs):
     #
     #     return authentication.get_error_response()
-
-    def get(self, request, *args, **kwargs):
+    @method_decorator(csrf_exempt)
+    def get(self, request, seen_status, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -617,6 +662,12 @@ class CommentList(GenericAPIView):
             seen_comment_list = models.Comment.objects.filter(seen=True)
             unseen_comment_list = models.Comment.objects.filter(seen=False)
             all_comment_list = models.Comment.objects.all()
+
+            if str(seen_status) == '1':
+
+                for data in unseen_comment_list:
+                    data.seen = True
+                    data.save()
 
             # serialize query list
             seen_comment_serial = serializer.CommentSerializer(data=seen_comment_list, many=True)
@@ -868,7 +919,7 @@ class ChangeUserInformation(GenericAPIView):
 
             json_data,
             ['username', 'name', 'last_name', 'phone_number', 'national_code', 'address',
-             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type']
+             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type', 'offline_number']
         )
 
         if status:
@@ -1156,7 +1207,7 @@ class AddCustomerInf(GenericAPIView):
 
             json_data,
             ['name', 'last_name', 'phone_number', 'national_code', 'address',
-             'house_number', 'drug_hist', 'decease_hist', 'doctor']
+             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'offline_number']
         )
 
         if status:
@@ -1191,3 +1242,162 @@ class AddCustomerInf(GenericAPIView):
             }, status=400)
 
 
+class WorkTimeList(GenericAPIView):
+
+    """
+
+    محاسبه زمان کاری کارمندان
+
+    """
+
+    serializer_class = swagger_schema.WorkTimeSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['from_', 'to']
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a']
+
+        )
+
+        if token_status == 201:
+
+            data = core.work_time_list(json_data)
+
+            return JsonResponse({
+
+                'status_code': 200,
+                'status_text': 'successfully',
+                'response_data': data
+
+            }, status=200)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class WorkTime(GenericAPIView):
+
+    """
+
+    محاسبه زمان کاری  یک کارمندان
+
+    """
+
+    serializer_class = swagger_schema.TokenUsernameSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, username, *args, **kwargs):
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a']
+
+        )
+
+        if token_status == 201:
+
+            data = core.work_time(username)
+
+            return JsonResponse({
+
+                'status_code': 200,
+                'status_text': 'successfully',
+                'response_data': data
+
+            }, status=200)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class GetUsername(GenericAPIView):
+
+    """
+
+    دریافت نام کاربری از روی توکن
+
+    """
+
+    serializer_class = swagger_schema.TokenOnlySerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, *args, **kwargs):
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a', 'r', 'c']
+
+        )
+
+        if token_status == 201:
+
+            token = request.headers['Authentication'].split(' ')[-1]
+            user, _ = core.get_user_from_token(token)
+
+            return JsonResponse({
+
+                'status_code': 200,
+                'status_text': 'successfully',
+                'username': user.username
+
+            }, status=200)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)

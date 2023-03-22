@@ -6,7 +6,10 @@ from Reserve import models, serializer
 from LazerApp import serializer as laser_serializer
 from LazerApp import models as laser_model
 from Core import models as core_model
+from Payment import models as pay_model
+from Payment import serializer as pay_serial
 from Admin import models as admin_model
+
 
 def reserve_list(json_data):
 
@@ -81,8 +84,12 @@ def reserve_inf(json_data):
         reserve = serializer.ReserveSerializer(data=[reserve], many=True)
         reserve.is_valid()
 
-        return 200, 'successfully', reserve.data
+        # get payment
+        payment_list = pay_model.Payment.objects.filter(reserve=reserve)
+        payment_list_serializer = pay_serial.PaymentSerializer(data=payment_list, many=True)
+        payment_list_serializer.is_valid()
 
+        return 200, 'successfully', [reserve.data, payment_list_serializer.data]
 
     except:
 
@@ -104,6 +111,19 @@ def cancel_reserve(json_data):
 
         # set parameter
         reserve.reserve_type = json_data['cancel_type']
+
+        if json_data['cancel_type'] == 'ca':
+
+            reserve_schedule = reserve.time_range
+
+            total_time = 0.0
+
+            for data in reserve.laser_area_list.all():
+                total_time += data.operate_time
+
+            reserve_schedule.total_reserve_time -= total_time
+
+            reserve_schedule.save()
 
         reserve.save()
 
@@ -230,7 +250,7 @@ def user_reserve_list(json_data):
 
     """
     # create new reserve
-    reserve = models.Reserve.objects.filter(user__username=json_data['username'])
+    reserve = models.Reserve.objects.filter(user__username=json_data['username']).order_by('reserve_time_int')
     reserve = serializer.ReserveSerializer(data=reserve, many=True)
     reserve.is_valid()
 
@@ -345,10 +365,8 @@ def time_list(reserve_id):
         cu_time_int += (60*60*24)
         cu_time = utils.time_int2str(cu_time_int).split(' ')
         cu_date = cu_time[0].split('/')
-        print(cu_time_int)
-        print(cu_time)
 
-        for time_, _, date_type in time_range:
+        for (time_, _, date_type) in time_range:
 
             try:
 
@@ -515,10 +533,12 @@ def client_reserve_add_time(token, json_date):
             reserve.reserve_time_int = reserve_time_cal
             reserve.reserve_time_str = utils.time_int2str(reserve_time_cal)
 
-            reserve.save()
-
             reserve_schedule.total_reserve_time += reserve_time
             reserve_schedule.save()
+
+            reserve.time_range = reserve_schedule
+
+            reserve.save()
 
             return 200, 'successfully'
 
@@ -529,3 +549,32 @@ def client_reserve_add_time(token, json_date):
     except:
 
         return 400, "wrong time range or user didn't have pending reserve"
+
+
+def cancel_time_range(json_data):
+
+    """
+
+    cancel time range
+
+    """
+    response_data = {}
+
+    for time_range in json_data['time_range_list']:
+
+        try:
+
+            time_range = models.ReserveSchedule.objects.filter(date=json_data['date']).get(
+                time_range=time_range)
+
+            time_range.total_reserve_time = 120
+
+            time_range.save()
+
+            response_data[time_range] = True
+
+        except:
+
+            response_data[time_range] = False
+
+    return response_data
