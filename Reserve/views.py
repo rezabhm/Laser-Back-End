@@ -575,6 +575,94 @@ class TimeList(GenericAPIView):
             }, status=400)
 
 
+class ReserveTimeRange(GenericAPIView):
+
+    """
+
+    بازه ی زمانی را برای نوبت میدهد
+
+    """
+
+    serializer_class = swagger_schema.ReserveSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, reserve_id, *args, **kwargs):
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(request, access_user_type=['a'])
+
+        if token_status == 201:
+
+            status, status_text, date, time_range = reserve.reserve_time_range(reserve_id)
+
+            return JsonResponse({
+
+                'status_code': status,
+                'status': status_text,
+                'date': date,
+                'time_range': time_range
+
+            }, status=int(status))
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class CancelReserveTimeRange(GenericAPIView):
+
+    """
+
+    بازه ی زمانی را برای نوبت کنسل میکند
+
+    """
+
+    serializer_class = swagger_schema.ReserveSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, reserve_id, *args, **kwargs):
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(request, access_user_type=['a'])
+
+        if token_status == 201:
+
+            status, status_text = reserve.cancel_reserve_time_range(reserve_id)
+
+            return JsonResponse({
+
+                'status_code': status,
+                'status': status_text,
+
+            }, status=int(status))
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
 class ClientPendingReserve(GenericAPIView):
     """
 

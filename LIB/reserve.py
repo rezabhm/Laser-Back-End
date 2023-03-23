@@ -578,3 +578,61 @@ def cancel_time_range(json_data):
             response_data[time_range] = False
 
     return response_data
+
+
+def reserve_time_range(reserve_id):
+
+    """
+
+    reserve time range
+
+    """
+
+    try:
+
+        # get reserve
+        reserve = models.Reserve.objects.get(id=reserve_id)
+
+        date = reserve.time_range.date
+        time_range = reserve.time_range.time_range
+
+        return 200, 'successfully', date, time_range
+
+    except:
+
+        return 400, 'wrong reserve id', None, None
+
+
+def cancel_reserve_time_range(reserve_id):
+
+    """
+
+    cancel reserve time range
+
+    """
+
+    try:
+
+        # get reserve
+        reserve = models.Reserve.objects.get(id=reserve_id)
+
+        reserve_body_list = reserve.laser_area_list.all()
+        reserve_time = 0.0
+
+        for laser_body in reserve_body_list:
+
+            reserve_time += laser_body.operate_time
+
+        time_range = reserve.time_range
+        time_range.total_reserve_time -= reserve_time
+
+        reserve.time_range = None
+
+        reserve.save()
+        time_range.save()
+
+        return 200, 'successfully'
+
+    except:
+
+        return 400, 'wrong reserve id'

@@ -495,7 +495,7 @@ class UserList(GenericAPIView):
         if token_status == 201:
 
             # get list of user's
-            user_list = models.User.objects.all()
+            user_list = models.User.objects.all().exclude(user_type='c').exclude(user_type='a')
 
             # serialize query list
             user_serial = serializer.UserSerializer(data=user_list, many=True)

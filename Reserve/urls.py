@@ -15,6 +15,8 @@ urlpatterns = [
     re_path(r'^reception/add/reserve/$', ReceptionAddReserve.as_view(), name='ReceptionAddReserve'),
     re_path(r'^prove/reserve/$', ProveReserve.as_view(), name='ProveReserve'),
     re_path(r'^time/list/(?P<reserve_id>[\w]+)/$', TimeList.as_view(), name='TimeList'),
+    re_path(r'^reserve/time/range/(?P<reserve_id>[\w]+)/$', ReserveTimeRange.as_view(), name='ReserveTimeRange'),
+    re_path(r'^cancel/time/range/(?P<reserve_id>[\w]+)/$', CancelReserveTimeRange.as_view(), name='CancelReserveTimeRange'),
     re_path(r'^client/pending/reserve/$', ClientPendingReserve.as_view(), name='ClientPendingReserve'),
     re_path(r'^client/add/time/$', ClientAddTimeReserve.as_view(), name='ClientAddTimeReserve'),
 

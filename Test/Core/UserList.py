@@ -5,7 +5,7 @@ import json
 
 src = 'http://127.0.0.1:8000/Core/'
 
-r = requests.post(src + 'user/list/', headers={'Token':'1'})
+r = requests.get(src + 'user/list/', headers={'Authorization': 'Barer 1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)
