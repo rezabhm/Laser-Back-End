@@ -85,7 +85,7 @@ def off_code_add_reserve(json_data):
         # get reserve
         reserve = res_model.Reserve.objects.get(id=json_data['reserve'])
 
-        if not reserve.used_off_code:
+        if reserve.used_off_code:
 
             # add off code
             reserve.off_code = off_code.code
