@@ -512,7 +512,7 @@ class ProveReserve(GenericAPIView):
 
         if token_status == 201:
 
-            status, status_text = reserve.prove_reserve(request.headers['Token'])
+            status, status_text = reserve.prove_reserve(request.headers['Authorization'].split(' ')[-1])
 
             return JsonResponse({
 
@@ -707,7 +707,7 @@ class ClientPendingReserve(GenericAPIView):
             # check customer user
             status_code, status_text, reserve_id = reserve.client_reserve_pending(
 
-                request.headers['Token'],
+                request.headers['Authorization'].split(' ')[-1],
                 json_data['laser_area_list']
 
             )
@@ -777,7 +777,7 @@ class ClientAddTimeReserve(GenericAPIView):
             # check customer user
             status_code, status_text = reserve.client_reserve_add_time(
 
-                request.headers['Token'],
+                request.headers['Authorization'].split(' ')[-1],
                 json_data,
 
             )
