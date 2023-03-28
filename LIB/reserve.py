@@ -93,7 +93,7 @@ def reserve_inf(json_data):
 
     except:
 
-        return 400, 'wrong reserve id', None
+        return 400, 'wrong reserve id', [None, None]
 
 
 def cancel_reserve(json_data):

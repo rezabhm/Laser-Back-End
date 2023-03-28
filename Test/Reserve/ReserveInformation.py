@@ -4,14 +4,14 @@ import json
 
 json_request = {
 
-    'reserve': '232'
+    'reserve': '914705616957727246778695585709597224'
 
 }
 
 
-src = 'http://127.0.0.1:8000/Reserve/'
+src = 'http://backend.lianalaser.com/Reserve/'
 
-r = requests.post(src + 'reserve/information/', json=json_request, headers={'Token':'1'})
+r = requests.post(src + 'reserve/information/', json=json_request, headers={'Authorization':'barear 1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)
