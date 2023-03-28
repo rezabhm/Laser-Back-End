@@ -559,6 +559,7 @@ def cancel_time_range(json_data):
 
     """
     response_data = {}
+    reserve_list = []
 
     for time_range_str in json_data['time_range_list']:
 
@@ -573,11 +574,18 @@ def cancel_time_range(json_data):
 
             response_data[time_range_str] = True
 
+            # add reserve in this range
+            reserve_list_obj = models.Reserve.objects.filter(time_range=time_range)
+            reserve_list_obj_json = serializer.ReserveSerializer(data=reserve_list_obj, many=True)
+            reserve_list_obj_json.is_valid()
+
+            reserve_list += reserve_list_obj_json
+
         except:
 
             response_data[time_range_str] = False
 
-    return response_data
+    return response_data, reserve_list
 
 
 def reserve_time_range(reserve_id):

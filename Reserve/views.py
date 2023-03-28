@@ -844,13 +844,14 @@ class CancelTimeRange(GenericAPIView):
         if token_status == 201:
 
             # check customer user
-            response_data = reserve.cancel_time_range(json_data)
+            response_data, reserve_list = reserve.cancel_time_range(json_data)
 
             return JsonResponse({
 
                 'status_code': 200,
                 'status': 'successfully',
                 'response_status': response_data,
+                'reserve_list': reserve_list,
 
             }, status=200)
 
