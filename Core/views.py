@@ -646,7 +646,7 @@ class CommentList(GenericAPIView):
     #
     #     return authentication.get_error_response()
     @method_decorator(csrf_exempt)
-    def get(self, request, *args, **kwargs):
+    def get(self, request, page_ination=0,*args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -659,9 +659,12 @@ class CommentList(GenericAPIView):
         if token_status == 201:
 
             # get list of comment
-            seen_comment_list = models.Comment.objects.filter(seen=True)
-            unseen_comment_list = models.Comment.objects.filter(seen=False)
-            all_comment_list = models.Comment.objects.all()
+            from_page_ination = 20 * int(page_ination)
+            to_page_ination = 20 * (int(page_ination)+1)
+
+            seen_comment_list = models.Comment.objects.filter(seen=True)[from_page_ination:to_page_ination]
+            unseen_comment_list = models.Comment.objects.filter(seen=False)[from_page_ination:to_page_ination]
+            all_comment_list = models.Comment.objects.all()[from_page_ination:to_page_ination]
 
             # serialize query list
             seen_comment_serial = serializer.CommentSerializer(data=seen_comment_list, many=True)
