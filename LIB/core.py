@@ -364,7 +364,7 @@ def token_change_password(json_data):
     """
 
     # check username
-    user, _ = get_user_from_token(json_data['Authentication'].split(' ')[-1])
+    user, _ = get_user_from_token(json_data['Authorization'].split(' ')[-1])
 
     if user:
 
