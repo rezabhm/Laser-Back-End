@@ -44,12 +44,66 @@ class LaserAreaList(GenericAPIView):
             all_laser_serializer = serializer.LaserAreaInformation(data=all_laser_area_list, many=True)
             all_laser_serializer.is_valid()
 
+            laser_list_object = []
+            laser_list_object_2 = []
+            for data in laser_area_list:
+
+                laser_list_object.append({
+
+                    'value': data.id,
+                    'label': data.laser.name,
+                    'operate_time': data.operate_time,
+                    'price': data.price
+
+                })
+
+                laser_list_object_2.append({
+
+                    'value': data.laser.name,
+                    'label': data.laser.name,
+                    'operate_time': data.operate_time,
+                    'price': data.price
+
+                })
+
+            all_laser_list_object = []
+            all_laser_list_object_2 = []
+            for data in all_laser_area_list:
+                all_laser_list_object.append({
+
+                    'value': data.id,
+                    'label': data.laser.name,
+                    'operate_time': data.operate_time,
+                    'price': data.price
+
+                })
+
+                all_laser_list_object_2.append({
+
+                    'value': data.laser.name,
+                    'label': data.laser.name,
+                    'operate_time': data.operate_time,
+                    'price': data.price
+
+                })
+
             return JsonResponse({
 
                 'status_code': 201,
                 'status_text': 'successfully ...',
-                'laser_area_list': laser_serializer.data,
-                'all_laser_area_list': all_laser_serializer.data,
+                'laser_area_object': {
+
+                    'first_type': laser_list_object,
+                    'second_type': laser_list_object_2
+
+                },
+
+                'all_laser_area_object': {
+
+                    'first_type': all_laser_list_object,
+                    'second_type': all_laser_list_object_2,
+
+                },
 
             }, status=201)
 
