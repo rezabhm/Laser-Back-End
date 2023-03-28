@@ -4,14 +4,14 @@ import json
 
 json_request = {
 
-    'name': 'کس',
+    'name': 'کون',
 
 }
 
 
 src = 'http://127.0.0.1:8000/Laser/'
 
-r = requests.post(src + 'delete/laser/area/', headers={'Token':'1'})
+r = requests.post(src + 'change/laser/area/status/', data=json_request,headers={'Authorization':'barear 1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

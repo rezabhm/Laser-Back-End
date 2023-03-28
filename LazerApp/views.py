@@ -34,17 +34,22 @@ class LaserAreaList(GenericAPIView):
         if token_status == 201:
 
             # list of laser list
-            laser_area_list = models.LaserAreaInformation.objects.filter(end_time_int=0.0)
+            laser_area_list = models.LaserAreaInformation.objects.filter(end_time_int=0.0).filter(laser__status=True)
+            all_laser_area_list = models.LaserAreaInformation.objects.filter(end_time_int=0.0)
 
             # serializer
             laser_serializer = serializer.LaserAreaInformation(data=laser_area_list, many=True)
             laser_serializer.is_valid()
+
+            all_laser_serializer = serializer.LaserAreaInformation(data=all_laser_area_list, many=True)
+            all_laser_serializer.is_valid()
 
             return JsonResponse({
 
                 'status_code': 201,
                 'status_text': 'successfully ...',
                 'laser_area_list': laser_serializer.data,
+                'all_laser_area_list': all_laser_serializer.data,
 
             }, status=201)
 
@@ -190,10 +195,10 @@ class EditLaserArea(GenericAPIView):
             }, status=400)
 
 
-class DeleteLaserArea(GenericAPIView):
+class ChangeLaserAreaStatus(GenericAPIView):
     """
 
-    حذف ناحیه لیزر
+    تغییر وضعیت ناحیه لیزر
 
     """
 

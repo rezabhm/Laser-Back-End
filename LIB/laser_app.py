@@ -110,10 +110,11 @@ def delete_laser_area(json_data):
         # create object
         laser_object = models.LaserArea.objects.get(name=json_data['name'])
 
-        # delete
-        laser_object.delete()
+        laser_object.status = False
 
-        return 200, 'successfully delete'
+        laser_object.save()
+
+        return 200, 'successfully change status'
 
     except:
 

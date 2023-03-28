@@ -18,6 +18,8 @@ class LaserArea(models.Model):
     # this param define after how many day's we must reset laser operation session (day)
     deadline_reset = models.IntegerField(default=30)
 
+    status = models.BooleanField(default=True)
+
     # this param determine operate time (minute)
     operate_time = models.IntegerField(default=5)
 

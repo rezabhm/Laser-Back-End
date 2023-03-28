@@ -10,7 +10,7 @@ class LaserAreaAdmin(admin.ModelAdmin):
 
     fieldsets = (
 
-        ("Information", {"fields": ("name", 'operate_time', 'deadline_reset', 'current_price')}),
+        ("Information", {"fields": ("name", 'operate_time', 'deadline_reset', 'current_price', 'status')}),
 
 
     )
