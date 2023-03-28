@@ -120,7 +120,7 @@ class SignUpAdmin(GenericAPIView):
 
             json_data,
             ['username', 'name', 'last_name', 'password', 'phone_number', 'national_code', 'address',
-             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type']
+             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type', 'offline_number']
 
         )
 
@@ -1427,7 +1427,7 @@ class GetUsername(GenericAPIView):
 
         if token_status == 201:
 
-            token = request.headers['Authentication'].split(' ')[-1]
+            token = request.headers['Authorization'].split(' ')[-1]
             user, _ = core.get_user_from_token(token)
 
             return JsonResponse({

@@ -601,10 +601,16 @@ def reserve_time_range(reserve_id):
         # get reserve
         reserve = models.Reserve.objects.get(id=reserve_id)
 
-        date = reserve.time_range.date
-        time_range = reserve.time_range.time_range
+        if reserve.time_range:
 
-        return 200, 'successfully', date, time_range
+            date = reserve.time_range.date
+            time_range = reserve.time_range.time_range
+
+            return 200, 'successfully', date, time_range
+
+        else:
+
+            return 400, "time didn't set", None, None
 
     except:
 

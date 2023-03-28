@@ -1,17 +1,11 @@
 import requests
 import json
 
-
-json_request = {
-
-    'reserve': '914705616957727246778695585709597224'
-
-}
-
+reserve = '914705616957727246778695585709597224'
 
 src = 'http://backend.lianalaser.com/Reserve/'
 
-r = requests.post(src + 'reserve/information/', json=json_request, headers={'Authorization':'barear 1'})
+r = requests.get(src + f'reserve/information/{reserve}/', headers={'Authorization':'barear 1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)
