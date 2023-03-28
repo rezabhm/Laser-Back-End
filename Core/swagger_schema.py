@@ -24,6 +24,20 @@ class SignUpSerializer(serializers.Serializer):
     doctor = serializers.CharField()
     offline_number = serializers.IntegerField()
 
+class ChangeInformationSerializer(serializers.Serializer):
+
+    username = serializers.CharField()
+    name = serializers.CharField()
+    last_name = serializers.CharField()
+    phone_number = serializers.CharField()
+    national_code = serializers.CharField()
+    address = serializers.CharField()
+    house_number = serializers.CharField()
+    user_type = serializers.CharField()
+    drug_hist = serializers.BooleanField()
+    decease_hist = serializers.BooleanField()
+    doctor = serializers.CharField()
+    offline_number = serializers.IntegerField()
 
 class AddCustomerInfSerializer(serializers.Serializer):
 

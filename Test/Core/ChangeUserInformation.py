@@ -4,8 +4,7 @@ import json
 
 json_request = {
 
-    'token': '1',
-    'username': 'Ho3ein',
+    'username': 'ho3ein',
     'name': 'hos',
     'last_name': 'bhm',
     'phone_number': '147852369',
@@ -16,6 +15,7 @@ json_request = {
     'decease_hist': False,
     'doctor': 'Sosan',
     'user_type': 'o',
+    'offline_number':0
 
 
 }
@@ -23,7 +23,7 @@ json_request = {
 
 src = 'http://127.0.0.1:8000/Core/'
 
-r = requests.post(src + 'change/user/information/', json=json_request)
+r = requests.post(src + 'change/user/information/', json=json_request, headers={'Authorization': 'barear 1'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

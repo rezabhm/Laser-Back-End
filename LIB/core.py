@@ -329,9 +329,9 @@ def change_password(username, password, code):
         try:
 
             # check code
-            fg_code = models.ForgotPassword.objects.get(code_generate=code)
+            fg_code = models.ForgotPassword.objects.filter(user=user).get(code_generate=code)
 
-            if not fg_code.used and fg_code.proved:
+            if not fg_code.used:
 
                 # change password
                 user.password = authentication.password_hash(password)
@@ -345,7 +345,7 @@ def change_password(username, password, code):
 
             else:
 
-                return 400, 'you cant use this code'
+                return 400, 'you cant use this code because you have use it'
 
         except:
 
@@ -422,11 +422,16 @@ def delete_user(username):
         user = models.User.objects.get(username=username)
 
         if user.user_type == 'c':
-            # get user
-            customer = models.Customer.objects.get(user__username=username)
 
-            # delete
-            customer.delete()
+            # get user
+            customer = models.Customer.objects.filter(user__username=username)
+
+            if len(customer) > 0:
+
+                cust = customer[0]
+
+                # delete
+                cust.delete()
 
         # delete
         user.delete()
@@ -473,7 +478,7 @@ def change_user_information(json_data, request):
 
         # get user
         user = models.User.objects.get(username=json_data['username'])
-        token = models.Token.objects.get(token_code=request.headers['Token'])
+        token = models.Token.objects.get(token_code=request.headers['Authorization'].split(' ')[-1])
 
         if json_data['username'] == token.user.username or token.user.user_type == 'a':
 
@@ -672,7 +677,6 @@ def customer_login_prove_code(json_data):
             login_code.used = True
 
             token = create_token(user)
-            print(token)
 
             # save
             login_code.save()
@@ -771,12 +775,12 @@ def work_time_list(json_data):
         if (data_hour < 14) and (data_hour > 8):
 
             # add with morning time
-            final_data[data.user.username]['morning_time'] += (data.exit_time_int - data.enter_time_str)
+            final_data[data.user.username]['morning_time'] += (data.exit_time_int - data.enter_time_int)
 
         else:
 
             # add with afternoon time
-            final_data[data.user.username]['afternoon_time'] += (data.exit_time_int - data.enter_time_str)
+            final_data[data.user.username]['afternoon_time'] += (data.exit_time_int - data.enter_time_int)
 
     return final_data
 

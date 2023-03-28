@@ -4,14 +4,14 @@ import json
 
 json_request = {
 
-    'username': 'arash',
+    'username': 'reza',
 
 }
 
 
 src = 'http://127.0.0.1:8000/Core/'
 
-r = requests.post(src + 'forgot/password/', json=json_request, headers={'Token':'1'})
+r = requests.post(src + 'forgot/password/', json=json_request)
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

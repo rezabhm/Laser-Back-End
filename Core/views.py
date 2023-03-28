@@ -900,7 +900,7 @@ class ChangeUserInformation(GenericAPIView):
 
     """
 
-    serializer_class = swagger_schema.SignUpSerializer
+    serializer_class = swagger_schema.ChangeInformationSerializer
     permission_classes = (AllowAny,)
     allowed_methods = ('POST',)
 

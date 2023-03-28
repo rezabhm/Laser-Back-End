@@ -27,7 +27,7 @@ urlpatterns = [
     re_path(r'^login/prove/code/$', CustomerLoginProveCode.as_view(), name='CustomerLoginProveCode'),
     re_path(r'^add/customer/information/$', AddCustomerInf.as_view(), name='AddCustomerInf'),
     re_path(r'^employer/work/time/list/$', WorkTimeList.as_view(), name='WorkTimeList'),
-    re_path(r'^employer/work/time/(?P<username>[\w].)/$', WorkTime.as_view(), name='WorkTime'),
+    re_path(r'^employer/work/time/(?P<username>[\w]+)/$', WorkTime.as_view(), name='WorkTime'),
     re_path(r'^get/username/$', GetUsername.as_view(), name='GetUsername'),
 
 ]

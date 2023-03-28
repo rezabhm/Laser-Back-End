@@ -4,9 +4,9 @@ import json
 
 json_request = {
 
-    'username': 'arash',
-    'code': '658732',
-    'password': '1478port9'
+    'username': 'arash21',
+    'code': '350106',
+    'password': '12345'
 
 }
 

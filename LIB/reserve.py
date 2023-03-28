@@ -560,22 +560,22 @@ def cancel_time_range(json_data):
     """
     response_data = {}
 
-    for time_range in json_data['time_range_list']:
+    for time_range_str in json_data['time_range_list']:
 
         try:
 
             time_range = models.ReserveSchedule.objects.filter(date=json_data['date']).get(
-                time_range=time_range)
+                time_range=time_range_str)
 
             time_range.total_reserve_time = 120
 
             time_range.save()
 
-            response_data[time_range] = True
+            response_data[time_range_str] = True
 
         except:
 
-            response_data[time_range] = False
+            response_data[time_range_str] = False
 
     return response_data
 

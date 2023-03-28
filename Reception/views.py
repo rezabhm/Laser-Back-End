@@ -42,6 +42,10 @@ class Operator(GenericAPIView):
                 'status_text': status_text,
                 'operator_name': data['name'],
                 'operator_username': data['username'],
+                'reception_name': data['reception_name'],
+                'reception_username': data['reception_username'],
+                'entered_operator_name': data['entered_operator_name'],
+                'entered_operator_username': data['entered_operator_username'],
 
             }, status=int(status_code))
 
