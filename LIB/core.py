@@ -797,3 +797,28 @@ def work_time(username):
     final_data.is_valid()
 
     return final_data.data
+
+
+def comment_change_status(comment_id):
+
+    """
+
+    change comment id
+
+    """
+
+    try:
+
+        # get comment
+        comment = models.Comment.objects.get(id=comment_id)
+
+        comment.seen = True
+
+        comment.save()
+
+        return 200, 'successfully ..'
+
+    except:
+
+        return 400, 'wrong comment id'
+

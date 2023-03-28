@@ -646,7 +646,7 @@ class CommentList(GenericAPIView):
     #
     #     return authentication.get_error_response()
     @method_decorator(csrf_exempt)
-    def get(self, request, seen_status, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         # check token is valid or not
         token_status, token_status_text = authentication.check_token(
@@ -662,12 +662,6 @@ class CommentList(GenericAPIView):
             seen_comment_list = models.Comment.objects.filter(seen=True)
             unseen_comment_list = models.Comment.objects.filter(seen=False)
             all_comment_list = models.Comment.objects.all()
-
-            if str(seen_status) == '1':
-
-                for data in unseen_comment_list:
-                    data.seen = True
-                    data.save()
 
             # serialize query list
             seen_comment_serial = serializer.CommentSerializer(data=seen_comment_list, many=True)
@@ -701,6 +695,53 @@ class CommentList(GenericAPIView):
 
             }, status=400)
 
+
+class CommentChangeStatus(GenericAPIView):
+    """
+
+    تغییر وضعیت کامنت به حالت خوانده شده
+
+    """
+
+    serializer_class = swagger_schema.TokenOnlySerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+    @method_decorator(csrf_exempt)
+    def get(self, request, comment_id, *args, **kwargs):
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a']
+
+        )
+
+        if token_status == 201:
+
+            # get list of comment
+            status, status_text = core.comment_change_status(comment_id)
+
+            return JsonResponse({
+
+                'status_code': int(status),
+                'status_text':status_text,
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
 
 class CustomerAdd2Charge(GenericAPIView):
     """
