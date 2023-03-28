@@ -456,7 +456,7 @@ class TokenChangePassword(GenericAPIView):
             return response
 
         # check customer user
-        status, status_txt = core.token_change_password(json_data)
+        status, status_txt = core.token_change_password(request, json_data)
 
         return JsonResponse({
 

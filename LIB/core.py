@@ -356,7 +356,7 @@ def change_password(username, password, code):
         return 400, 'wrong username'
 
 
-def token_change_password(json_data):
+def token_change_password(request, json_data):
     """
 
     check forgot password's code is valid or not
@@ -364,7 +364,7 @@ def token_change_password(json_data):
     """
 
     # check username
-    user, _ = get_user_from_token(json_data['Authorization'].split(' ')[-1])
+    user, _ = get_user_from_token(request.headers['Authorization'].split(' ')[-1])
 
     if user:
 
