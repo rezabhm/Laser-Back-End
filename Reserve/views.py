@@ -863,3 +863,49 @@ class CancelTimeRange(GenericAPIView):
                 'status': token_status_text,
 
             }, status=400)
+
+
+class TimeRangeList(GenericAPIView):
+
+    """
+
+    دریافت بازه های زمانی
+
+    """
+
+    serializer_class = swagger_schema.ReserveSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, *args, **kwargs):
+
+        return JsonResponse({
+
+            'status_code': 200,
+            'status': 'successfully',
+            'morning_time_range': [
+
+                '8-10',
+                '10-12',
+                '12-14',
+            ],
+
+            'afternoon_time_range': [
+                '15-17',
+                '17-19',
+                '19-21',
+                '21-23',
+                '23-1',
+                '1-3',
+                '3-5',
+
+            ]
+
+        }, status=int(200))
+
+
