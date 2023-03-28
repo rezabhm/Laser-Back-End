@@ -743,6 +743,7 @@ class CommentChangeStatus(GenericAPIView):
 
             }, status=400)
 
+
 class CustomerAdd2Charge(GenericAPIView):
     """
 
