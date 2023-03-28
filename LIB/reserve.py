@@ -579,7 +579,7 @@ def cancel_time_range(json_data):
         reserve_list_obj_json = serializer.ReserveSerializer(data=reserve_list_obj, many=True)
         reserve_list_obj_json.is_valid()
 
-        reserve_list += reserve_list_obj_json
+        reserve_list += reserve_list_obj_json.data
 
         # except:
         #
