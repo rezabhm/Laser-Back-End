@@ -873,7 +873,7 @@ class TimeRangeList(GenericAPIView):
 
     """
 
-    serializer_class = swagger_schema.ReserveSerializer
+    # serializer_class = swagger_schema.
     permission_classes = (AllowAny,)
     allowed_methods = ('GET',)
 
