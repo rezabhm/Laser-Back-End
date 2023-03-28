@@ -371,7 +371,7 @@ def token_change_password(json_data):
         if user.password == authentication.password_hash(json_data['old_password']):
 
             user.password = authentication.password_hash(json_data['password'])
-            user.password()
+            user.save()
 
             return 200, 'successfully changed'
 
