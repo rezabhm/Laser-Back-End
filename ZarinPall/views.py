@@ -20,7 +20,7 @@ ZP_API_STARTPAY = f"https://{sandbox}.zarinpal.com/pg/StartPay/"
 # Important: need to edit for realy server.
 CallbackURL = 'http://127.0.0.1:8000/zarin/pall/verify/'
 SuccessFull_Redirect_url = 'http://127.0.0.1:8000/'
-UnSuccessFull_Redirect_url = ''
+UnSuccessFull_Redirect_url = 'http://127.0.0.1:8000/'
 
 
 @csrf_exempt
@@ -125,6 +125,6 @@ def verify(request):
             zarin_payment.save()
 
             response['Status'] = False
-            return JsonResponse({'status': False, 'code': str(response['Status'])})
+            return HttpResponseRedirect(UnSuccessFull_Redirect_url)
 
     return JsonResponse(response)
