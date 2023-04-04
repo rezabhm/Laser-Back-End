@@ -641,6 +641,8 @@ def cancel_reserve_time_range(reserve_id):
         time_range.total_reserve_time -= reserve_time
 
         reserve.time_range = None
+        reserve.reserve_time_str = '-'
+        reserve.request_time_int = 0
 
         reserve.save()
         time_range.save()

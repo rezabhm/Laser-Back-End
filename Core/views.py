@@ -256,7 +256,7 @@ class LogOut(GenericAPIView):
 
         if token_status == 201:
 
-            core.logout(request.headers['Token'])
+            core.logout(request.headers['Authentication'].split(' ')[-1])
 
             return JsonResponse({
 
@@ -1107,7 +1107,7 @@ class AddComment(GenericAPIView):
 
         if token_status == 201:
 
-            status_code, status_text = core.add_comment(json_data['comment_text'], request.headers['Token'])
+            status_code, status_text = core.add_comment(json_data['comment_text'], request.headers['Authentication'].split(' ')[-1])
 
             return JsonResponse({
 
@@ -1268,7 +1268,7 @@ class AddCustomerInf(GenericAPIView):
 
         if token_status == 201:
 
-            status_code, status_text = core.customer_add_inf(json_data, request.headers['Token'])
+            status_code, status_text = core.customer_add_inf(json_data, request.headers['Authentication'].split(' ')[-1])
 
             return JsonResponse({
 
