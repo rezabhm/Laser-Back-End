@@ -43,7 +43,7 @@ class SignUpCustomer(GenericAPIView):
 
             json_data,
             ['username', 'name', 'last_name', 'password', 'phone_number', 'national_code', 'address',
-             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'offline_number']
+             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'offline_number', 'last_date']
 
         )
 
@@ -120,7 +120,7 @@ class SignUpAdmin(GenericAPIView):
 
             json_data,
             ['username', 'name', 'last_name', 'password', 'phone_number', 'national_code', 'address',
-             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type', 'offline_number']
+             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type', 'offline_number', 'last_date']
 
         )
 
@@ -964,7 +964,7 @@ class ChangeUserInformation(GenericAPIView):
 
             json_data,
             ['username', 'name', 'last_name', 'phone_number', 'national_code', 'address',
-             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type', 'offline_number']
+             'house_number', 'drug_hist', 'decease_hist', 'doctor', 'user_type', 'offline_number', 'last_date']
         )
 
         if status:

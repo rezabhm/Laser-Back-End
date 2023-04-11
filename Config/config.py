@@ -24,6 +24,7 @@ payment_type_tuple = (
     ('ca', 'cash'),
     ('cr', 'credit card'),
     ('ch', 'check'),
+    ('on', 'online'),
 
 )
 

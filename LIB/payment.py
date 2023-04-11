@@ -20,7 +20,6 @@ def delete_off_code(json_data):
         # get off code
         off_code = models.OffCode.objects.get(code=json_data['off_code'])
 
-
         # delete
         off_code.delete()
 
@@ -49,7 +48,6 @@ def create_off_code(json_data):
     except:
 
         # create new off code
-
         if (float(json_data['amount']) <= 100.0) and (float(json_data['amount']) > 0.0):
 
             # create off code
@@ -110,7 +108,7 @@ def multiple_payment(json_data):
 
     """
 
-    stor multiple payment
+    store multiple payment
 
     """
 

@@ -76,6 +76,7 @@ def create_user(data):
         customer.decease_hist = data['decease_hist']
         customer.doctor = data['doctor']
         customer.offline_num = data['offline_number']
+        customer.last_date = data['last_date']
         customer.user = user
 
         # save
@@ -198,7 +199,10 @@ def logout(token):
     """
 
     # get user
-    user, _ = get_user_from_token(token)
+    user, token = get_user_from_token(token)
+
+    token.token_expire_time_int = time.time()
+    token.save()
 
     # add exit time
     user_exit_time(user)
@@ -247,6 +251,8 @@ def forgot_password(username):
             fg_obj.proved = False
             fg_obj.used = False
 
+            SMS.send_password_code_sms(user.phone_number, fg_obj.code_generate)
+
             # save
             fg_obj.save()
 
@@ -263,9 +269,6 @@ def forgot_password(username):
 
             # save
             fg_obj.save()
-
-        # send sms to user
-        SMS.send_forgot_password_sms(user.phone_number, fg_obj.code_generate)
 
         return 201, 'successfully'
 
@@ -504,6 +507,7 @@ def change_user_information(json_data, request):
                 customer.drug_hist = json_data['drug_hist']
                 customer.decease_hist = json_data['decease_hist']
                 customer.offline_num = json_data['offline_number']
+                customer.last_date = json_data['last_date']
 
                 # save
                 customer.save()
@@ -615,6 +619,8 @@ def customer_login(username):
         login_code.expire_time = time.time() + (60 * 10)
         login_code.used = False
         login_code.proved = False
+
+        SMS.send_password_code_sms(username, login_code.code_generate)
 
         # save
         login_code.save()

@@ -11,6 +11,7 @@ this file contain POST request's parameter for swagger
 class SignUpSerializer(serializers.Serializer):
 
     username = serializers.CharField()
+    last_date = serializers.CharField()
     password = serializers.CharField()
     name = serializers.CharField()
     last_name = serializers.CharField()
@@ -38,6 +39,7 @@ class ChangeInformationSerializer(serializers.Serializer):
     decease_hist = serializers.BooleanField()
     doctor = serializers.CharField()
     offline_number = serializers.IntegerField()
+    last_date = serializers.CharField()
 
 class AddCustomerInfSerializer(serializers.Serializer):
 

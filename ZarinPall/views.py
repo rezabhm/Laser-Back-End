@@ -1,3 +1,6 @@
+import time
+import uuid
+
 from django.conf import settings
 import requests
 import json
@@ -6,6 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from . import models
 from Reserve import models as res_model
+from Payment import models as pay_model
+from LIB import utils
 
 # ? sandbox merchant
 if settings.SANDBOX:
@@ -116,6 +121,20 @@ def verify(request):
             reserve = zarin_payment.reserve
             reserve.total_payment_amount += zarin_payment.amount
             reserve.save()
+
+            pay_object = pay_model.Payment(
+
+                id=str(uuid.uuid4().int),
+                price=float(zarin_payment.amount),
+                payment_time_int=time.time(),
+                payment_time_str=utils.time_int2str(time.time()),
+                payment_type='on',
+                reserve=reserve,
+                user=reserve.user
+
+            )
+
+            pay_object.save()
 
             return HttpResponseRedirect(SuccessFull_Redirect_url)
 

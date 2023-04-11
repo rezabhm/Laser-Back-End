@@ -9,7 +9,7 @@ from Core import models as core_model
 from Payment import models as pay_model
 from Payment import serializer as pay_serial
 from Admin import models as admin_model
-
+from SmsService import SMS
 
 def reserve_list(json_data):
 
@@ -111,6 +111,13 @@ def cancel_reserve(json_data):
 
         # set parameter
         reserve.reserve_type = json_data['cancel_type']
+
+        if json_data['sms_status']:
+
+            user = reserve.user
+            phone_number = user.phone_number
+            name = f'{user.name} {user.last_name}'
+            SMS.cancel_sms(phone_number, name)
 
         if json_data['cancel_type'] == 'ca':
 
@@ -277,10 +284,19 @@ def prove_reserve(token):
         with open('trust_price.txt') as fd:
             trust_price = fd.read()
 
-        if reserve_obj.total_payment_amount > float(trust_price):
+        if reserve_obj.total_payment_amount >= float(trust_price):
 
             # update param
             reserve_obj.reserve_type = 'wa'
+
+            user = reserve_obj.user
+
+            phone_number = user.phone_number
+            name = f'{user.name} {user.last_name}'
+            date = reserve_obj.reserve_time_str.split(' ')[0]
+            hour = reserve_obj.reserve_time_str.split(' ')[-1]
+
+            SMS.successfully_reserve_sms(phone_number, name, date, hour)
 
             # save
             reserve_obj.save()
