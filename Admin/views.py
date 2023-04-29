@@ -1,7 +1,6 @@
 from django.http import JsonResponse
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
 
 from LIB import utils
 from LIB import authentication
@@ -48,12 +47,65 @@ class OperatorProgramList(GenericAPIView):
             operator_list_serializer = serializer.OperatorProgramSerializer(data=operator_list, many=True)
             status = operator_list_serializer.is_valid()
 
+            fulled_time = []
+            final_data = []
+
+            for data in operator_list_serializer.data:
+                fulled_time.append(data['id'])
+
+            for _ in range(7):
+
+                time_str = utils.time_int2str(date_int).split(' ')[0]
+
+                morning_time = time_str + 'm'
+                afternoon_time = time_str + 'a'
+
+                if morning_time not in fulled_time:
+                    final_data.append({
+
+                        'id': morning_time,
+                        'date_str': time_str,
+                        'program_turn': 'm',
+                        'operator_name': '',
+                        'operator': '',
+
+                    })
+
+                else:
+
+                    for data in operator_list_serializer.data:
+
+                        if data['id'] == morning_time:
+                            final_data.append(data)
+                            break
+
+                if afternoon_time not in fulled_time:
+                    final_data.append({
+
+                        'id': afternoon_time,
+                        'date_str': time_str,
+                        'program_turn': 'a',
+                        'operator_name': '',
+                        'operator': '',
+
+                    })
+
+                else:
+
+                    for data in operator_list_serializer.data:
+
+                        if data['id'] == afternoon_time:
+                            final_data.append(data)
+                            break
+
+                date_int += 60*60*24
+
             return JsonResponse({
 
                 'status_code': token_status,
                 'status': token_status_text,
                 'serializer_status': status,
-                'operator_program': operator_list_serializer.data,
+                'operator_program': final_data,
 
             }, status=int(token_status))
 

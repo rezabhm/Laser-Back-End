@@ -220,33 +220,33 @@ def new_reserve_reception(json_data):
 
     """
     # username
-    try:
+    # try:
 
-        # check user exist
-        user = core_model.User.objects.get(username=json_data['username'])
+    # check user exist
+    user = core_model.User.objects.get(username=json_data['username'])
 
-        # create new reserve
-        reserve = models.Reserve()
+    # create new reserve
+    reserve = models.Reserve()
 
-        # set parameter
-        reserve.id = str(uuid.uuid4().int)
-        reserve.reserve_type = 'wa'
-        reserve.session_number = 1
-        reserve.online_reserve = False
-        reserve.total_price_amount = 0.0
-        reserve.total_payment_amount = 0.0
-        reserve.reserve_time_int = time.time()
-        reserve.reserve_time_str = utils.time_int2str(time.time())
-        reserve.user = user
+    # set parameter
+    reserve.id = str(uuid.uuid4().int)
+    reserve.reserve_type = 'wa'
+    reserve.session_number = 1
+    reserve.online_reserve = False
+    reserve.total_price_amount = 0.0
+    reserve.total_payment_amount = 0.0
+    reserve.reserve_time_int = time.time()
+    reserve.reserve_time_str = utils.time_int2str(time.time())
+    reserve.user = user
 
-        # save
-        reserve.save()
+    # save
+    reserve.save()
 
-        return 200, "successfully", reserve.id
-
-    except:
-
-        return 400, "wrong username", None
+    return 200, "successfully", reserve.id
+    #
+    # except:
+    #
+    #     return 400, "wrong username", None
 
 
 def user_reserve_list(json_data):

@@ -72,7 +72,7 @@ def check_program(operator_program):
     """
 
     # get id
-    id_ = operator_program['date'] + operator_program['program_turn']
+    id_ = operator_program['date_str'] + operator_program['program_turn']
 
     try:
 
@@ -109,14 +109,14 @@ def create_operator_program(operator_program):
 
     # create operator program
     op = models.OperatorProgram()
-    id_ = operator_program['date'] + operator_program['program_turn']
+    id_ = operator_program['date_str'] + operator_program['program_turn']
 
     # set param
     op.id = id_
     op.operator_name = operator_program['operator_name']
     op.program_turn = operator_program['program_turn']
-    op.date_int = utils.cvt_solar_date2ad_int(operator_program['date'])
-    op.date_str = operator_program['date']
+    op.date_int = utils.cvt_solar_date2ad_int(operator_program['date_str'])
+    op.date_str = operator_program['date_str']
 
     try:
 

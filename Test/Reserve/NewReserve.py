@@ -4,14 +4,14 @@ import json
 
 json_request = {
 
-    'username': 'arash21',
+    'username': 'fariborz',
 
 }
 
 
 src = 'http://127.0.0.1:8000/Reserve/'
 
-r = requests.post(src + 'reception/add/reserve/', json=json_request, headers={'Token':'1'})
+r = requests.post(src + 'reception/add/reserve/', json=json_request, headers={'Authorization':'Barear 4804fa170acc47078f14afc1cf7d4384'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

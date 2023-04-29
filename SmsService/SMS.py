@@ -96,13 +96,6 @@ def send_password_code_sms(phone_number, code):
 
     r = requests.post(src, json=json_request)
     if r.status_code == 200:
-        print(json_request)
         return True, r.content
     else:
         return False, r.content
-
-
-review_1_day_sms('09027235390', 'رضا بهرامی', '1402/11/2', '8:00:00')
-review_1_week_sms('09027235390', 'رضا بهرامی')
-cancel_sms('09027235390', 'رضا بهرامی')
-send_password_code_sms('09027235390', '12248')

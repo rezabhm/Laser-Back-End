@@ -6,78 +6,112 @@ json_request = {
 
     'token': '2',
     'operator_program_list': [
-
         {
-
-            'date': "1401/11/3",          # ==> show date of program                        $ example : '1401/1101'
-            'operator': "Ho3ein",      # ==> operator's username                         $ example : 'Reza'
-            'program_turn': "m", # ==> define program is on morning or afternoon   $ example : 'm'
-            'operator_name': "Ho3ein", # ==> operator operator name                      $ example : 'reza'
-
+            "id": "1401/1/1m",
+            "date_str": "1401/1/1",
+            "program_turn": "m",
+            "operator_name": "reza",
+            "operator": "reza"
         },
-
         {
-
-            'date': "1401/11/3",  # ==> show date of program                        $ example : '1401/1101'
-            'operator': "Rza",  # ==> operator's username                         $ example : 'Reza'
-            'program_turn': "a",  # ==> define program is on morning or afternoon   $ example : 'm'
-            'operator_name': "reza bhm",  # ==> operator operator name                      $ example : 'reza'
-
+            "id": "1401/1/1a",
+            "date_str": "1401/1/1",
+            "program_turn": "a",
+            "operator_name": "reza",
+            "operator": "reza"
         },
-
         {
-
-            'date': "1401/11/4",  # ==> show date of program                        $ example : '1401/1101'
-            'operator': "Ho3ein",      # ==> operator's username                         $ example : 'Reza'
-            'program_turn': "m",  # ==> define program is on morning or afternoon   $ example : 'm'
-            'operator_name': "Ho3ein",  # ==> operator operator name                      $ example : 'reza'
-
+            "id": "1401/1/2m",
+            "date_str": "1401/1/2",
+            "program_turn": "m",
+            "operator_name": "",
+            "operator": ""
         },
-
         {
-
-            'date': "1401/11/14",  # ==> show date of program                        $ example : '1401/1101'
-            'operator': "Reza",  # ==> operator's username                         $ example : 'Reza'
-            'program_turn': "a",  # ==> define program is on morning or afternoon   $ example : 'm'
-            'operator_name': "reza bhm",  # ==> operator operator name                      $ example : 'reza'
-
+            "id": "1401/1/2a",
+            "date_str": "1401/1/2",
+            "program_turn": "a",
+            "operator_name": "reza",
+            "operator": "reza"
         },
-
         {
-
-            'date': "1401/11/14",  # ==> show date of program                        $ example : '1401/1101'
-            'operator': "Reza",  # ==> operator's username                         $ example : 'Reza'
-            'program_turn': "m",  # ==> define program is on morning or afternoon   $ example : 'm'
-            'operator_name': "reza bhm",  # ==> operator operator name                      $ example : 'reza'
-
+            "id": "1401/1/3m",
+            "date_str": "1401/1/3",
+            "program_turn": "m",
+            "operator_name": "reza",
+            "operator": "reza"
         },
-
         {
-
-            'date': "1401/11/24",  # ==> show date of program                        $ example : '1401/1101'
-            'operator': "Ho3ein",      # ==> operator's username                         $ example : 'Reza'
-            'program_turn': "a",  # ==> define program is on morning or afternoon   $ example : 'm'
-            'operator_name': "Ho3ein",  # ==> operator operator name                      $ example : 'reza'
-
+            "id": "1401/1/3a",
+            "date_str": "1401/1/3",
+            "program_turn": "a",
+            "operator_name": "reza",
+            "operator": "reza"
         },
-
         {
-
-            'date': "1401/11/26",  # ==> show date of program                        $ example : '1401/1101'
-            'operator': "Ho3ein",      # ==> operator's username                         $ example : 'Reza'
-            'program_turn': "a",  # ==> define program is on morning or afternoon   $ example : 'm'
-            'operator_name': "Ho3ein",  # ==> operator operator name                      $ example : 'reza'
-
+            "id": "1401/1/4m",
+            "date_str": "1401/1/4",
+            "program_turn": "m",
+            "operator_name": "",
+            "operator": ""
         },
-
-
+        {
+            "id": "1401/1/4a",
+            "date_str": "1401/1/4",
+            "program_turn": "a",
+            "operator_name": "",
+            "operator": ""
+        },
+        {
+            "id": "1401/1/5m",
+            "date_str": "1401/1/5",
+            "program_turn": "m",
+            "operator_name": "",
+            "operator": ""
+        },
+        {
+            "id": "1401/1/5a",
+            "date_str": "1401/1/5",
+            "program_turn": "a",
+            "operator_name": "reza",
+            "operator": "reza"
+        },
+        {
+            "id": "1401/1/6m",
+            "date_str": "1401/1/6",
+            "program_turn": "m",
+            "operator_name": "",
+            "operator": ""
+        },
+        {
+            "id": "1401/1/6a",
+            "date_str": "1401/1/6",
+            "program_turn": "a",
+            "operator_name": "",
+            "operator": ""
+        },
+        {
+            "id": "1401/1/7m",
+            "date_str": "1401/1/7",
+            "program_turn": "m",
+            "operator_name": "",
+            "operator": ""
+        },
+        {
+            "id": "1401/1/7a",
+            "date_str": "1401/1/7",
+            "program_turn": "a",
+            "operator_name": "",
+            "operator": ""
+        }
     ]
+
 }
 
 
 src = 'http://127.0.0.1:8000/Admin/'
 
-r = requests.post(src + 'set/operator/program/', json=json_request, headers={'token': '1'})
+r = requests.post(src + 'set/operator/program/', json=json_request, headers={'Authorization': 'barear 985094aeb18743c48eaff537f8838e4c'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

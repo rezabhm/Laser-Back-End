@@ -127,7 +127,7 @@ class Customer(models.Model):
     doctor = models.CharField(max_length=50)
     charge = models.BooleanField(default=False)
     offline_num = models.IntegerField(default=0)
-    last_date = models.CharField(max_length=20)
+    last_date = models.CharField(max_length=20, default='-')
 
     # foreign key
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default='')
