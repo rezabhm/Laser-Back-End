@@ -6,7 +6,6 @@ from LIB import utils
 from LIB import authentication
 from LIB import admin
 
-from . import models
 from . import serializer
 from . import swagger_schema
 

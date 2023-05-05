@@ -109,9 +109,9 @@ json_request = {
 }
 
 
-src = 'http://127.0.0.1:8000/Admin/'
+src = 'http://backend.lianalaser.com/Admin/'
 
-r = requests.post(src + 'set/operator/program/', json=json_request, headers={'Authorization': 'barear 985094aeb18743c48eaff537f8838e4c'})
+r = requests.post(src + 'set/operator/program/', json=json_request, headers={'Authorization': 'barear 4804fa170acc47078f14afc1cf7d4384'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

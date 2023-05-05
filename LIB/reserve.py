@@ -96,6 +96,93 @@ def reserve_inf(json_data):
         return 400, 'wrong reserve id', [None, None]
 
 
+def reserve_pay(json_data):
+
+    """
+
+    return reserve information
+
+    """
+
+    try:
+
+        # get reserve
+        reserve = models.Reserve.objects.get(id=json_data['reserve'])
+
+        operator = f'{reserve.user.name} {reserve.user.last_name}'
+        turn_time = reserve.request_time_str
+        total_price_amount = reserve.total_price_amount - reserve.total_payment_amount
+
+        _, _, laser_area_list = reserve_laser_area(json_data)
+
+        #################################################################################################
+        #################################################################################################
+        #################################################################################################
+
+        filter_list = []
+        for data in laser_area_list:
+
+            filter_list.append(data['id'])
+
+        #################################################################################################
+        #################################################################################################
+        #################################################################################################
+        #################################################################################################
+
+        all_laser_area_list = laser_model.LaserAreaInformation.objects.filter(end_time_int=0.0)
+
+        all_laser_list_object = []
+        all_laser_list_object_2 = []
+        for data in all_laser_area_list:
+
+            if data.id in filter_list:
+
+                all_laser_list_object_2.append({
+
+                    'value': data.laser.name,
+                    'label': data.laser.name,
+                    'operate_time': data.operate_time,
+                    'price': data.price,
+                    'isSelected': True,
+
+                })
+
+                all_laser_list_object.append({
+
+                    'value': data.id,
+                    'label': data.laser.name,
+                    'operate_time': data.operate_time,
+                    'price': data.price
+
+                })
+
+            else:
+
+                all_laser_list_object_2.append({
+
+                    'value': data.laser.name,
+                    'label': data.laser.name,
+                    'operate_time': data.operate_time,
+                    'price': data.price,
+                    'isSelected': False,
+
+                })
+
+        return 200, 'successfully', [
+
+            operator,
+            turn_time,
+            total_price_amount,
+            all_laser_list_object_2,
+            all_laser_list_object,
+
+        ]
+
+    except:
+
+        return 400, 'wrong reserve id', [None, None]
+
+
 def cancel_reserve(json_data):
 
     """

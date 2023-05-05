@@ -204,6 +204,64 @@ class ReserveInformation(GenericAPIView):
             }, status=400)
 
 
+class ReservePayment(GenericAPIView):
+    """
+
+    جزعیات نوبت
+
+    """
+
+    serializer_class = swagger_schema.ReserveInformationSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def get(self, request, reserve_id, *args, **kwargs):
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a', 'r']
+
+        )
+
+        if token_status == 201:
+
+            # check customer user
+            status_code, status_text, reserve_data = reserve.reserve_pay(
+
+                {'reserve':reserve_id}
+
+            )
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status': status_text,
+                'id': reserve_id,
+                'name': reserve_data[0],
+                'turn_time': reserve_data[1],
+                'total_price_amount': reserve_data[2],
+                'laser_area_list': reserve_data[3],
+                'laser_area_options': reserve_data[4]
+
+            }, status=201)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
 class CancelReserve(GenericAPIView):
     """
 

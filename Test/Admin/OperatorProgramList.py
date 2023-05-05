@@ -3,9 +3,9 @@ import json
 
 token = '1'
 
-src = 'http://127.0.0.1:8000/Admin/'
+src = 'http://backend.lianalaser.com/Admin/'
 
-r = requests.get(src + 'operator/program/list/1401/1/1', headers={'Authorization': 'barear 985094aeb18743c48eaff537f8838e4c'})
+r = requests.get(src + 'operator/program/list/1402/2/2', headers={'Authorization': 'barear 4804fa170acc47078f14afc1cf7d4384'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

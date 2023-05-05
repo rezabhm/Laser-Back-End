@@ -82,7 +82,7 @@ class Reserve(models.Model):
     reserve_time_str = models.CharField(default='-', max_length=25)
 
     request_time_int = models.FloatField(default=0.0)
-    request_time_str = models.CharField(default='-', max_length=25)
+    request_time_str = models.CharField(default='-', max_length=30)
 
     # foreign key
     user = models.ForeignKey(core_model.User, on_delete=models.PROTECT)
