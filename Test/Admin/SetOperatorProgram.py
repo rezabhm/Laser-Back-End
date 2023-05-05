@@ -118,3 +118,4 @@ pretty_json = json.dumps(res_data, indent=4)
 
 print('\nStatus Code : ', r.status_code)
 print('\n\nResponse JSON : \n\n', pretty_json)
+print(src + 'set/operator/program/')

@@ -180,7 +180,15 @@ def reserve_pay(json_data):
 
     except:
 
-        return 400, 'wrong reserve id', [None, None]
+        return 400, 'wrong reserve id', [
+
+            None,
+            None,
+            None,
+            None,
+            None,
+
+        ]
 
 
 def cancel_reserve(json_data):

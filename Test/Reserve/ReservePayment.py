@@ -1,11 +1,11 @@
 import requests
 import json
 
-reserve = '140990025231674443400925908216295156995'
+reserve = '7004527397671361538141393167307103497'
 
-src = 'http://127.0.0.1:8000/Reserve/'
+src = 'http://backend.lianalaser.com/Reserve/'
 
-r = requests.get(src + f'reserve/payment/{reserve}/', headers={'Authorization':'barear 985094aeb18743c48eaff537f8838e4c'})
+r = requests.get(src + f'reserve/payment/{reserve}/', headers={'Authorization':'barear 4804fa170acc47078f14afc1cf7d4384'})
 
 res_data = r.json()
 pretty_json = json.dumps(res_data, indent=4)

@@ -250,7 +250,7 @@ class ReservePayment(GenericAPIView):
                 'laser_area_list': reserve_data[3],
                 'laser_area_options': reserve_data[4]
 
-            }, status=201)
+            }, status=status_code)
 
         else:
 
