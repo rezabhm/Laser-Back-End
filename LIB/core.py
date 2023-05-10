@@ -201,8 +201,9 @@ def logout(token):
     # get user
     user, token = get_user_from_token(token)
 
-    token.token_expire_time_int = time.time()
-    token.save()
+    # token.token_expire_time_int = time.time()
+    # token.save()
+    token.delete()
 
     # add exit time
     user_exit_time(user)
