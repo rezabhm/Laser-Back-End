@@ -247,8 +247,8 @@ class ReservePayment(GenericAPIView):
                 'name': reserve_data[0],
                 'turn_time': reserve_data[1],
                 'total_price_amount': reserve_data[2],
-                'laser_area_list': reserve_data[3],
-                'laser_area_options': reserve_data[4]
+                'laser_area_options': reserve_data[3],
+                'laser_area_list': reserve_data[4]
 
             }, status=status_code)
 
