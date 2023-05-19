@@ -10,7 +10,7 @@ json_request = {
 }
 
 
-src = 'http://backend.lianalaser.com/Core/'
+src = 'http://127.0.0.1:8000/Core/'
 
 r = requests.post(src + 'login/', json=json_request)
 

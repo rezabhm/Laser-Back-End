@@ -235,7 +235,7 @@ class ReservePayment(GenericAPIView):
             # check customer user
             status_code, status_text, reserve_data = reserve.reserve_pay(
 
-                {'reserve':reserve_id}
+                {'reserve': reserve_id}
 
             )
 
@@ -247,8 +247,76 @@ class ReservePayment(GenericAPIView):
                 'name': reserve_data[0],
                 'turn_time': reserve_data[1],
                 'total_price_amount': reserve_data[2],
+                'total_payment':reserve_data[5],
                 'laser_area_options': reserve_data[3],
-                'laser_area_list': reserve_data[4]
+                'laser_area_list': reserve_data[4],
+
+            }, status=status_code)
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
+class ReserveAddPayment(GenericAPIView):
+    """
+
+    جزعیات نوبت
+
+    """
+
+    serializer_class = swagger_schema.ReserveInformationSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    #
+    # def get(self, request, *args, **kwargs):
+    #
+    #     return authentication.get_error_response()
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['reserve', 'laser_area_options', 'off-code', 'payment_list']
+
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a', 'r']
+
+        )
+
+        if token_status == 201:
+
+            # check customer user
+            status_code, status_text = reserve.reserve_add_pay(
+
+                json_data
+
+            )
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status': status_text,
+
 
             }, status=status_code)
 

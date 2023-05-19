@@ -9,6 +9,7 @@ urlpatterns = [
     re_path(r'^user/reserve/list/$', UserReserveList .as_view(), name='UserReserveList'),
     re_path(r'^reserve/information/(?P<reserve_id>[\w]+)/$', ReserveInformation.as_view(), name='ReserveInformation'),
     re_path(r'^reserve/payment/(?P<reserve_id>[\w]+)/$', ReservePayment.as_view(), name='ReservePayment'),
+    re_path(r'^reserve/add/payment/$', ReserveAddPayment.as_view(), name='ReserveAddPayment'),
     re_path(r'^cancel/reserve/$', CancelReserve.as_view(), name='CancelReserve'),
     re_path(r'^cancel/time/range/$', CancelTimeRange.as_view(), name='CancelTimeRange'),
     re_path(r'^reserve/laser/area/$', ReserveLaserArea.as_view(), name='ReserveLaserArea'),

@@ -139,7 +139,7 @@ def reserve_pay(json_data):
 
                 all_laser_list_object_2.append({
 
-                    'value': data.laser.name,
+                    'value': data.id,
                     'label': data.laser.name,
                     'operate_time': data.operate_time,
                     'price': data.price,
@@ -160,7 +160,7 @@ def reserve_pay(json_data):
 
                 all_laser_list_object_2.append({
 
-                    'value': data.laser.name,
+                    'value': data.id,
                     'label': data.laser.name,
                     'operate_time': data.operate_time,
                     'price': data.price,
@@ -175,6 +175,7 @@ def reserve_pay(json_data):
             total_price_amount,
             all_laser_list_object_2,
             all_laser_list_object,
+            reserve.total_payment_amount,
 
         ]
 
@@ -189,6 +190,93 @@ def reserve_pay(json_data):
             None,
 
         ]
+
+
+def reserve_add_pay(json_data):
+
+    """
+
+    return reserve information
+
+    """
+
+    try:
+
+        reserve = models.Reserve.objects.get(id=json_data['reserve'])
+        reserve.laser_area_list.clear()
+
+    except:
+
+        return 400, 'wrong reserve id'
+
+    try:
+
+        if len(json_data['off-code']) > 0:
+
+            off_code = pay_model.OffCode.objects.get(code=json_data['off-code'])
+
+            reserve.off_code = off_code.code
+            reserve.used_off_code = True
+
+    except:
+
+        return 400, 'wrong off-code'
+
+    total_price = 0.0
+    reserve.laser_area_name = ''
+
+    for data in json_data['laser_area_options']:
+
+        if data['isSelected']:
+            total_price += data['price']
+
+            try:
+
+                laser_area = laser_model.LaserAreaInformation.objects.get(id=data['value'])
+                reserve.laser_area_list.add(laser_area)
+                reserve.laser_area_name += laser_area.laser.name + ' '
+
+            except:
+
+                return 400, 'wrong laser area id'
+
+    if len(json_data['off-code']) > 0:
+        total_price -= (float(off_code.amount) / 100) * total_price
+
+    reserve.total_price_amount = total_price
+
+    total_payment = 0.0
+    for data in json_data['payment_list']:
+
+        total_payment += float(data['price'])
+
+        payment_obj = pay_model.Payment(
+
+            id= str(uuid.uuid4().int),
+            price= data['price'],
+            payment_time_int=time.time(),
+            payment_time_str=utils.time_int2str(time.time()),
+            payment_type=data['payment_type'],
+            reserve=reserve,
+            user=reserve.user,
+
+        )
+
+        payment_obj.save()
+
+    reserve.total_payment_amount += total_payment
+
+    if reserve.total_payment_amount >= reserve.total_price_amount:
+        reserve.payed = True
+        reserve.reserve_type = 'co'
+
+    else:
+
+        reserve.reserve_type = 'do'
+
+    reserve.save()
+
+    return 200, 'successfully'
 
 
 def cancel_reserve(json_data):
