@@ -218,7 +218,7 @@ class Login(GenericAPIView):
 
         )
 
-        return JsonResponse({
+        x = JsonResponse({
 
             'status_code': status,
             'status_text': status_txt,
@@ -226,6 +226,10 @@ class Login(GenericAPIView):
             'user_type': user_type
 
         }, status=int(status))
+
+        print(x.headers)
+
+        return x
 
 
 class LogOut(GenericAPIView):
@@ -550,6 +554,8 @@ class OperatorList(GenericAPIView):
             # get list of operator's
             operator_list = models.User.objects.filter(user_type='o')
 
+            op_list = [f'{user.name} {user.last_name}' for user in operator_list]
+
             # serialize query list
             operator_serial = serializer.UserSerializer(data=operator_list, many=True)
             operator_serial.is_valid()
@@ -559,6 +565,7 @@ class OperatorList(GenericAPIView):
                 'status_code': 201,
                 'status_text': 'successfully ... ',
                 'operator_list': operator_serial.data,
+                'operator_array': op_list
 
             }, status=201)
 

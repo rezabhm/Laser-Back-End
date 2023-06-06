@@ -30,6 +30,26 @@ def delete_off_code(json_data):
         return 400, 'wrong code'
 
 
+def off_code_ret(json_data):
+
+    """
+
+    return off code
+
+    """
+
+    try:
+
+        # get off code
+        off_code = models.OffCode.objects.get(code=json_data['off_code'])
+
+        return 200, 'successfully ...', off_code.amount
+
+    except:
+
+        return 400, 'wrong code', None
+
+
 def create_off_code(json_data):
 
     """

@@ -120,6 +120,68 @@ class OffCodeDelete(GenericAPIView):
             }, status=400)
 
 
+class OffCode(GenericAPIView):
+    """
+
+    دریافت درصد کد تخفیف
+
+    """
+
+    serializer_class = swagger_schema.OffCodeDeleteSerializer
+    permission_classes = (AllowAny,)
+    allowed_methods = ('POST',)
+
+    def post(self, request, *args, **kwargs):
+
+        # decode json
+        json_data = utils.decode_reqeust_json(request)
+
+        # check input json param
+        status, response = authentication.check_request_json(
+
+            json_data,
+            ['off_code', ]
+
+        )
+
+        if status:
+            return response
+
+        # check token is valid or not
+        token_status, token_status_text = authentication.check_token(
+
+            request,
+            access_user_type=['a', 'r', 'c']
+
+        )
+
+        if token_status == 201:
+
+            # check customer user
+            status_code, status_text, amount = payment.off_code_ret(
+
+                json_data
+
+            )
+
+            return JsonResponse({
+
+                'status_code': status_code,
+                'status': status_text,
+                'off-code_amount': amount
+
+            }, status=int(status_code))
+
+        else:
+
+            return JsonResponse({
+
+                'status_code': token_status,
+                'status': token_status_text,
+
+            }, status=400)
+
+
 class OffCodeCreate(GenericAPIView):
     """
 
